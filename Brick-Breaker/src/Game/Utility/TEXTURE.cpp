@@ -6,7 +6,7 @@
 Texture::Texture()
 {
 	glGenTextures(1, &ID);
-	glBindTexture(GL_TEXTURE_2D, ID);
+	Bind();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -18,6 +18,7 @@ void Texture::LoadData(const char* filename, bool alpha)
 {
 	// type ---> 
 	// 1 ===> png
+	Bind();
 	if (alpha)
 	{
 		LoadePng(filename);
@@ -26,11 +27,11 @@ void Texture::LoadData(const char* filename, bool alpha)
 	{
 		LoadImage(filename);
 	}
+	Unbind();
 }
 
 void Texture::LoadePng(const char *filename)
 {
-	glBindTexture(GL_TEXTURE_2D, ID);
 	stbi_set_flip_vertically_on_load(true);
 	unsigned char* data = stbi_load(filename, &width, &height,
 		&nrChannels, 0);
@@ -49,7 +50,6 @@ void Texture::LoadePng(const char *filename)
 
 void Texture::LoadImage(const char *filename)
 {
-	glBindTexture(GL_TEXTURE_2D, ID);
 	stbi_set_flip_vertically_on_load(true);
 	unsigned char* data = stbi_load(filename, &width, &height,
 		&nrChannels, 0);

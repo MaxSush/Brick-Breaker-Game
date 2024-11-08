@@ -1,49 +1,53 @@
 #include "Game.h"
 
+#include "../Window/glfw_window.h"
 #include <iostream>
 
-Breaker::Game::Game()
+namespace Breaker
 {
-}
+	Game::Game(const WinProps* props)
+		:
+		props(props)
+	{
+	}
 
-Breaker::Game::~Game()
-{
-	ResourceManager::Clear();
-}
+	Game::~Game()
+	{
+		ResourceManager::Clear();
+		delete sprite;
+		delete ball;
+	}
 
-void Breaker::Game::Init()
-{
-	ResourceManager::LoadShader("assets/cubeShader.vs", "assets/cubeShader.fg", "cube");
+	void Game::Init()
+	{
+		ResourceManager::LoadTexture("assets/background.jpg", false, "background");
+		ResourceManager::LoadTexture("assets/ball.png", true, "ball");
 
-	float vertices[] = {
-		0.5f, 0.5f, 0.0f, // top right
-		0.5f, -0.5f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f, // bottom left
-		-0.5f, 0.5f, 0.0f // top left
-	};
+		ResourceManager::LoadShader("assets/cubeShader.vs", "assets/cubeShader.fg", "cube");
 
-	unsigned int indices[] = {
-		0, 1, 3, // first triangle
-		1, 2, 3 // second triangle
-	};
-	
+		sprite = new SpriteRenderer(ResourceManager::GetShader("cube"));
 
-	vao.Bind();
-	VBO vbo(vertices, sizeof(vertices));
-	EBO ebo(indices, sizeof(indices));
+		ball = new Ball(props->window, glm::vec2(props->width / 2.0f, props->height - 100.0f), 10.0f, ResourceManager::GetTexture("ball"));
+	}
 
-	vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
-	vao.Unbind();
-}
+	void Game::Update(float dt)
+	{
+		ball->SetBall();
+	}
 
-void Breaker::Game::Update(float dt)
-{
-}
+	void Game::Render()
+	{
+		if (state == GameState::GAME_ACTIVE)
+		{
+			sprite->DrawSprite(ResourceManager::GetTexture("background"), glm::vec2(0.0f, 0.0f), glm::vec2(900.0f, 700.0f));
+			ball->Draw(*sprite);
+		}
+	}
 
-void Breaker::Game::Render()
-{
-	ResourceManager::GetShader("cube").Activate();
-	vao.Bind();
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	vao.Unbind();
+	void Game::PrintWindowProps()
+	{
+		if (props) {
+			std::cout << "Width: " << props->width << ", Height: " << props->height  << "\n" << sizeof(props->window) << std::endl;
+		}
+	}
 }

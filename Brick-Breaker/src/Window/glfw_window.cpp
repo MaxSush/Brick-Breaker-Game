@@ -18,7 +18,7 @@ namespace Breaker
 
     Window::~Window()
     {
-        glfwDestroyWindow(window);
+        glfwDestroyWindow(props.window);
         glfwTerminate();
     }
 
@@ -32,16 +32,22 @@ namespace Breaker
     {
         glfwPollEvents();
 
+        glfwGetWindowSize(props.window, &props.width, &props.height);
         glViewport(0, 0, props.width, props.height);
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(props.window);
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    bool Window::IsShouldClose()
+    bool Window::IsShouldClose() const
     {
-        return !glfwWindowShouldClose(window);
+        return !glfwWindowShouldClose(props.window);
+    }
+
+    const WinProps* Window::GetWindowProps() const
+    {
+        return &props;
     }
 
     void Window::Init()
@@ -51,15 +57,15 @@ namespace Breaker
             std::cerr << "Faied to initialize GLFW" << "\n";
         }
 
-        window = glfwCreateWindow(props.width, props.height, props.name, NULL, NULL);
-        if (!window)
+        props.window = glfwCreateWindow(props.width, props.height, props.name, NULL, NULL);
+        if (!props.window)
         {
             std::cerr << "Failed to create GLFW window" << "\n";
             glfwTerminate();
             return;
         }
 
-        glfwMakeContextCurrent(window);
+        glfwMakeContextCurrent(props.window);
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {

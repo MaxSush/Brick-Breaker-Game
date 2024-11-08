@@ -11,6 +11,9 @@ add_library(Game STATIC
     Utility/VAO.cpp
     Utility/VBO.cpp
     Utility/EBO.cpp
+    SpriteRenderer.cpp
+    GameObject/GameObject.cpp 
+    GameObject/Ball.cpp
 )
 
 

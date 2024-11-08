@@ -7,14 +7,14 @@
 
 namespace Breaker
 {
-    typedef unsigned int uint;
-
     struct WinProps
     {
-        uint width;
-        uint height;
+        int width;
+        int height;
+        GLFWwindow* window = nullptr;
         const char* name;
-        WinProps(uint w = 900, uint h = 700, const char* name = "Brick-Breaker")
+        
+        WinProps(int w = 900, int h = 700, const char* name = "Brick-Breaker")
             : width(w), height(h), name(name)
         {
         }
@@ -29,10 +29,10 @@ namespace Breaker
         static std::unique_ptr<Window> CreateWindow(const WinProps& props = WinProps());
 
         void OnUpdate();
-        bool IsShouldClose();
+        bool IsShouldClose() const;
+        const WinProps* GetWindowProps() const;
 
     private:
-        GLFWwindow* window;
         WinProps props;
 
         void Init();

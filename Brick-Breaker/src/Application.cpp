@@ -6,7 +6,7 @@ namespace Breaker
     Application::Application()
     {
         wnd = Window::CreateWindow();
-        game = std::make_unique<Game>();
+        game = std::make_unique<Game>(wnd->GetWindowProps());
         last = std::chrono::steady_clock::now();
     }
 
@@ -17,10 +17,12 @@ namespace Breaker
     void Application::Run()
     {
         game->Init();
+        game->PrintWindowProps();
         while (wnd->IsShouldClose())
         {
             FrameCounter();
             // std::cout << "Frametime : " << dt << "\n";
+
             game->Update(dt);
             
             game->Render();

@@ -5,7 +5,8 @@ set(SHADER_FILES
 )
 
 set(TEXTURE_FILES
-
+    textures/background.jpg
+    textures/ball.png
 )
 
 set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin/assets)

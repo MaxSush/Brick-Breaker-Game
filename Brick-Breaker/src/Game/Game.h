@@ -3,12 +3,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <memory>
-
 #include "ResourceManager.h"
-#include "Utility/VAO.h"
-#include "Utility/VBO.h"
-#include "Utility/EBO.h"
+#include "SpriteRenderer.h"
+#include "GameObject/Ball.h"
 
 namespace Breaker
 {
@@ -20,17 +17,26 @@ namespace Breaker
         GAME_EXIT
     };
 
+    struct WinProps;
+
     class Game
     {
     public:
-        Game();
+        Game(const WinProps* props);
         ~Game();
         void Init();
         void Update(float dt);
         void Render();
 
+        void PrintWindowProps();
+
     private:
-        GameState state = GameState::GAME_MENU;
-        VAO vao;
+        const WinProps* props;
+
+        GameState state = GameState::GAME_ACTIVE;
+        SpriteRenderer* sprite = nullptr;
+
+
+        Ball* ball = nullptr;
     };
 }

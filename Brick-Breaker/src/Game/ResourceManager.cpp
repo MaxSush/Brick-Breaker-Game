@@ -45,7 +45,6 @@ Texture ResourceManager::LoadTextureFromFile(const char* filename, bool alpha)
 {
     Texture texture;
     texture.LoadData(filename, alpha);
-    texture.Unbind();
 
     return texture;
 }
