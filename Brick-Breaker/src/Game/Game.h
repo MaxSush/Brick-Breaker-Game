@@ -39,8 +39,6 @@ namespace Breaker
         GameState state = GameState::GAME_ACTIVE;
         SpriteRenderer* sprite = nullptr;
         Ball* ball = nullptr;
-        ParticleGenerator* p_generator = nullptr;
-        Paddle* paddle = nullptr;
 
     };
 }

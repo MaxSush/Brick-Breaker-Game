@@ -10,6 +10,7 @@ namespace Breaker
 		props(props),
 		playzone(Rect(glm::vec2(0, 0), glm::vec2(props->width, props->height)))
 	{
+		playzone = { 0,0,(float)props->width, (float)props->height };
 	}
 
 	Game::~Game()
@@ -47,19 +48,8 @@ namespace Breaker
 	{
 		paddle->Update(dt, playzone, ball);
 		ball->SetBall();
-
-		if (!ball->IsStuck())
-		{
-			ball->Update(dt);
-
-			paddle->DoBallCollision(ball);
-
-			if (ball->DoWallCollision(playzone))
-			{
-				paddle->SetCooldown();
-			}
-			p_generator->Update(dt, ball);
-		}
+		ball->Update(dt);
+		ball->DoWallCollision(playzone);
 	}
 
 	void Game::Render()
@@ -67,13 +57,7 @@ namespace Breaker
 		if (state == GameState::GAME_ACTIVE)
 		{
 			sprite->DrawSprite(ResourceManager::GetTexture("background"), glm::vec2(0.0f, 0.0f), glm::vec2(900.0f, 700.0f));
-			paddle->Draw(sprite);
-			ball->Draw(sprite);
-
-			if (!ball->IsStuck())
-			{
-				p_generator->Draw();
-			}
+			ball->Draw(*sprite);
 		}
 	}
 }

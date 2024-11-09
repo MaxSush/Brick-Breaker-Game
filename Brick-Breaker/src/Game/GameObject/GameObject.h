@@ -9,10 +9,9 @@
 class GameObject
 {
 public:
-	GameObject() = default;
-	GameObject(glm::vec2 pos, glm::vec2 size, const Texture& texture);
+	GameObject(GLFWwindow* window, glm::vec2 pos, glm::vec2 size, const Texture& texture);
 	~GameObject() { }
-	virtual void Draw(SpriteRenderer* render) = 0;
+	virtual void Draw(SpriteRenderer& render) = 0;
 protected:
 	Rect rect;
 	Texture texture;
