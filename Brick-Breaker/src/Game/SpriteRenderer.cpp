@@ -11,7 +11,7 @@ SpriteRenderer::~SpriteRenderer()
 {
 }
 
-void SpriteRenderer::DrawSprite(const Texture& texture, glm::vec2 pos, glm::vec2 size, glm::vec3 color)
+void SpriteRenderer::DrawSprite(const Texture& texture, glm::vec2 pos, glm::vec2 size, glm::vec4 color)
 {
 	shader.Activate();
 
@@ -23,7 +23,7 @@ void SpriteRenderer::DrawSprite(const Texture& texture, glm::vec2 pos, glm::vec2
 
 	shader.setMat4("projection", projection);
 	shader.setMat4("model", model);
-	shader.setVec3("spriteColor", color);
+	shader.setVec4("spriteColor", color);
 
 	glActiveTexture(GL_TEXTURE0);
 	texture.Bind();

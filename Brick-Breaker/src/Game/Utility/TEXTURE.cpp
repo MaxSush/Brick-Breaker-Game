@@ -32,7 +32,7 @@ void Texture::LoadData(const char* filename, bool alpha)
 
 void Texture::LoadePng(const char *filename)
 {
-	stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(false);
 	unsigned char* data = stbi_load(filename, &width, &height,
 		&nrChannels, 0);
 	if (data)

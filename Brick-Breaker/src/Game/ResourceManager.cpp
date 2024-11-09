@@ -1,7 +1,7 @@
 #include "ResourceManager.h"
 
-std::map<std::string, Shader> ResourceManager::Shaders;
-std::map<std::string, Texture> ResourceManager::Textures;
+std::unordered_map<std::string, Shader> ResourceManager::Shaders;
+std::unordered_map<std::string, Texture> ResourceManager::Textures;
 
 void ResourceManager::LoadTexture(const char* filename, bool alpha, std::string name)
 {

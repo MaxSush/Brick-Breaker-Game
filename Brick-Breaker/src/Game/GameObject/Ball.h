@@ -1,19 +1,29 @@
 #pragma once
 
 #include "GameObject.h"
+#include "../Window/KeyListner.h"
+#include "Utility/Rect.h"
+
 
 class Ball : GameObject
 {
-	// ball's position is equal to its center position
+	// coord is at top left corner
 public:
 	Ball(GLFWwindow* window, glm::vec2 pos, float radius, const Texture& texture);
+	~Ball() { }
 	void Draw(SpriteRenderer& render) override;
 	void Update(float dt);
+	void DoWallCollision(Rect& playzone);
 	void SetBall();
 
+	const glm::vec2 GetVelocity() const;
+	const glm::vec2 GetPosition() const;
+	const float GetSpeed() const;
+
+
 private:
-	glm::vec2 velocity = glm::vec2(0.0f);
+	glm::vec2 velocity = glm::vec2(-1.0f);
 	float radius;
-	float speed = 10;
+	float speed = 300;
 	bool stuck = true;
 };

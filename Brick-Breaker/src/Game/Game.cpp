@@ -9,6 +9,7 @@ namespace Breaker
 		:
 		props(props)
 	{
+		playzone = { 0,0,(float)props->width, (float)props->height };
 	}
 
 	Game::~Game()
@@ -27,12 +28,14 @@ namespace Breaker
 
 		sprite = new SpriteRenderer(ResourceManager::GetShader("cube"));
 
-		ball = new Ball(props->window, glm::vec2(props->width / 2.0f, props->height - 100.0f), 10.0f, ResourceManager::GetTexture("ball"));
+		ball = new Ball(props->window, glm::vec2(100.0f,100.0f), 100.0f, ResourceManager::GetTexture("ball"));
 	}
 
 	void Game::Update(float dt)
 	{
 		ball->SetBall();
+		ball->Update(dt);
+		ball->DoWallCollision(playzone);
 	}
 
 	void Game::Render()
@@ -41,13 +44,6 @@ namespace Breaker
 		{
 			sprite->DrawSprite(ResourceManager::GetTexture("background"), glm::vec2(0.0f, 0.0f), glm::vec2(900.0f, 700.0f));
 			ball->Draw(*sprite);
-		}
-	}
-
-	void Game::PrintWindowProps()
-	{
-		if (props) {
-			std::cout << "Width: " << props->width << ", Height: " << props->height  << "\n" << sizeof(props->window) << std::endl;
 		}
 	}
 }

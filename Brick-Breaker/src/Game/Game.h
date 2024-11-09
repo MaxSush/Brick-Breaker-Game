@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Utility/Rect.h"
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
 #include "GameObject/Ball.h"
@@ -28,15 +29,14 @@ namespace Breaker
         void Update(float dt);
         void Render();
 
-        void PrintWindowProps();
-
     private:
         const WinProps* props;
 
+        Rect playzone;
+
         GameState state = GameState::GAME_ACTIVE;
         SpriteRenderer* sprite = nullptr;
-
-
         Ball* ball = nullptr;
+
     };
 }

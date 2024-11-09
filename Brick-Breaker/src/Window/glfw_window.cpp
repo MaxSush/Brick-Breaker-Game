@@ -67,6 +67,8 @@ namespace Breaker
 
         glfwMakeContextCurrent(props.window);
 
+        glfwSetKeyCallback(props.window, KeyListner::key_callback);
+
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
             std::cout << "Failed to initialize GLAD" << std::endl;
