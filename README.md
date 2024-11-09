@@ -1,2 +1,2 @@
-# opengl-startup-project
-template to draw cube using glfw
+# Brick-Breaker Game
+OpenGl 2D game

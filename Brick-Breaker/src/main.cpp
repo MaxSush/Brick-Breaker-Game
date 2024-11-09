@@ -1,5 +1,4 @@
 #define _CRTDBG_MAP_ALLOC
-#include <cstdlib>
 #include <crtdbg.h>
 
 #include <iostream>
@@ -25,7 +24,13 @@ int main()
     catch (...)
     {
         char buffer[256];
-        strerror_s(buffer, sizeof(buffer), errno);
+
+        #ifdef _WIN32
+            strerror_s(buffer, sizeof(buffer), errno);
+        #else
+            strerror_r(errno, buffer, sizeof(buffer));
+        #endif
+
         std::cerr << "Error [ " << errno << " ]: " << buffer << std::endl;
     }
 

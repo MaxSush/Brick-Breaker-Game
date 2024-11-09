@@ -17,7 +17,6 @@ namespace Breaker
     void Application::Run()
     {
         game->Init();
-        game->PrintWindowProps();
         while (wnd->IsShouldClose())
         {
             FrameCounter();
