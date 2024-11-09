@@ -9,7 +9,7 @@ class GameObject
 {
 public:
 	GameObject(GLFWwindow* window, glm::vec2 pos, glm::vec2 size, const Texture& texture);
-	~GameObject();
+	~GameObject() { }
 	virtual void Draw(SpriteRenderer& render) = 0;
 protected:
 	glm::vec2 pos, size;

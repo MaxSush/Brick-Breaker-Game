@@ -8,7 +8,3 @@ GameObject::GameObject(GLFWwindow* window, glm::vec2 pos, glm::vec2 size, const 
 	texture(texture)
 {
 }
-
-GameObject::~GameObject()
-{
-}

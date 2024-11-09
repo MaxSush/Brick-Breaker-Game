@@ -1,6 +1,6 @@
 #pragma once 
 
-#include <map>
+#include <unordered_map>
 
 #include "Utility/SHADER.h"
 #include "Utility/TEXTURE.h"
@@ -18,8 +18,8 @@ public:
 private:
     ResourceManager() {}
 
-    static std::map<std::string, Shader> Shaders;
-    static std::map<std::string, Texture> Textures;
+    static std::unordered_map<std::string, Shader> Shaders;
+    static std::unordered_map<std::string, Texture> Textures;
 
     static Shader LoadShaderFromFile(const char* VertexShaderFilename, const char* FragmentShaderFilename);
     static Texture LoadTextureFromFile(const char* filename, bool alpha);
