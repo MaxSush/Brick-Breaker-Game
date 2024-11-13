@@ -6,7 +6,9 @@ in vec2 TexCoords;
 uniform sampler2D image;
 uniform vec4 spriteColor;
 
+uniform float brightnessFactor;
+
 void main()
 {
-    FragColor = vec4(spriteColor * 1.3) * texture(image, TexCoords);
+    FragColor = vec4(spriteColor * brightnessFactor) * texture(image, TexCoords);
 }

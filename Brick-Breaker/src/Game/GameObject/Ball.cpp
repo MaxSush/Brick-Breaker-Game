@@ -58,17 +58,17 @@ void Ball::SetBall()
 	}
 }
 
-const glm::vec2 Ball::GetVelocity() const
-{
-	return velocity;
-}
-
 const glm::vec2 Ball::GetPosition() const
 {
 	return pos;
 }
 
-const float Ball::GetSpeed() const
+const glm::vec2 Ball::GetSize() const
 {
-	return speed;
+	return size;
+}
+
+const bool Ball::IsStuck() const
+{
+	return stuck;
 }

@@ -2,11 +2,15 @@
 set(SHADER_FILES
     shaders/cubeShader.fg
     shaders/cubeShader.vs
+    shaders/particle.fg
+    shaders/particle.vs
 )
 
 set(TEXTURE_FILES
     textures/background.jpg
     textures/ball.png
+    textures/particle.png
+
 )
 
 set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin/assets)

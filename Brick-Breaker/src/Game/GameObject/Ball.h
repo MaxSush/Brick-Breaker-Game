@@ -16,14 +16,13 @@ public:
 	void DoWallCollision(Rect& playzone);
 	void SetBall();
 
-	const glm::vec2 GetVelocity() const;
 	const glm::vec2 GetPosition() const;
-	const float GetSpeed() const;
-
+	const glm::vec2 GetSize() const;
+	const bool IsStuck() const;
 
 private:
 	glm::vec2 velocity = glm::vec2(-1.0f);
 	float radius;
-	float speed = 300;
+	float speed = 500;
 	bool stuck = true;
 };

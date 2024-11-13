@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
 #include "GameObject/Ball.h"
+#include <GameObject/ParticleGenerator.h>
 
 namespace Breaker
 {
@@ -37,6 +38,7 @@ namespace Breaker
         GameState state = GameState::GAME_ACTIVE;
         SpriteRenderer* sprite = nullptr;
         Ball* ball = nullptr;
+        ParticleGenerator* p_generator = nullptr;
 
     };
 }
