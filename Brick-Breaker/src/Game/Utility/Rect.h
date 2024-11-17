@@ -2,4 +2,7 @@
 
 struct Rect
 {
+
+	float Left, Top, Right, Bottom;
+
 };

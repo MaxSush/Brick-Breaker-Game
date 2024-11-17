@@ -13,6 +13,7 @@ public:
 	~Ball() { }
 	void Draw(SpriteRenderer& render) override;
 	void Update(float dt);
+	void DoWallCollision(Rect& playzone);
 	void SetBall();
 	void ReboundX();
 	void ReboundY();
@@ -25,6 +26,6 @@ public:
 private:
 	glm::vec2 velocity = glm::vec2(-1.0f);
 	float radius;
-	float speed = 10;
+	float speed = 300;
 	bool stuck = true;
 };
