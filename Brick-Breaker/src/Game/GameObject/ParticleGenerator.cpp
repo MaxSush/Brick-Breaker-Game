@@ -5,7 +5,7 @@ static float getRandomFloat(float min, float max) {
 	std::random_device rd;  // Seed
 	std::mt19937 gen(rd()); // Random number generator
 	std::uniform_real_distribution<> distr(min, max); // Define range
-	return distr(gen);
+	return static_cast<float>(distr(gen));
 }
 
 ParticleGenerator::ParticleGenerator(const Texture& texture, const Shader& shader)
@@ -27,8 +27,8 @@ void ParticleGenerator::Draw()
 	shader.Activate();
 	shader.setFloat("brightnessFactor", brightnessFactor);
 
-	// Get max vector range
-	std::cout << particles.size() << "\n";
+	// Get max vector range 
+	// std::cout << particle.size() << "\n";		==> 210
 
 	for (auto& p : particles)
 	{
@@ -42,25 +42,26 @@ void ParticleGenerator::Draw()
 
 void ParticleGenerator::Update(float dt, Ball* ball)
 {
-		for (int i = 0; i < new_particle; ++i)
-		{
-			Spawn(ball);
-		}
+	for (int i = 0; i < new_particle; ++i)
+	{
+		Spawn(ball);
+	}
 
-		for (size_t i = 0; i < particles.size(); ++i)
+	for (size_t i = 0; i < particles.size(); ++i)
+	{
+		if (particles[i].life > 0)
 		{
-			if (particles[i].life > 0)
-			{
-				Particle& p = particles[i];
-				//p.pos += glm::normalize(p.velocity) * p.speed * dt;
-				p.life -= dt * 3.0f;
-				p.color.a -= dt * 3.0f;
-			}
-			else
-			{
-				particles.erase(particles.begin() + i);
-			}
+			Particle& p = particles[i];
+			//p.pos += glm::normalize(p.velocity) * p.speed * dt;
+			p.life -= dt * 3.0f;
+			p.color.a -= dt * 3.0f;
 		}
+		else
+		{
+			particles.erase(particles.begin() + i);
+		}
+	}
+
 }
 
 void ParticleGenerator::Spawn(Ball* ball)
@@ -68,14 +69,14 @@ void ParticleGenerator::Spawn(Ball* ball)
 	Particle p = Particle();
 
 	float offset = 0.5f;
-	p.size = ball->GetSize() * offset;
+	p.size = ball->GetRect().size * offset;
 
 	float p_random_x = getRandomFloat(0, p.size.x);
 	float p_random_y = getRandomFloat(0, p.size.y);
 
 	float x = getRandomFloat(0, 1);
 	p.color = glm::vec4(x, x, x, 1.0f);
-	p.pos = ball->GetPosition() + glm::vec2(p_random_x,p_random_y);
+	p.pos = ball->GetRect().pos + glm::vec2(p_random_x,p_random_y);
 
 	particles.push_back(p);
 }

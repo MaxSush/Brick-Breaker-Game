@@ -8,6 +8,7 @@
 #include "SpriteRenderer.h"
 #include "GameObject/Ball.h"
 #include <GameObject/ParticleGenerator.h>
+#include <GameObject/Paddle.h>
 
 namespace Breaker
 {
@@ -39,6 +40,7 @@ namespace Breaker
         SpriteRenderer* sprite = nullptr;
         Ball* ball = nullptr;
         ParticleGenerator* p_generator = nullptr;
+        Paddle* paddle = nullptr;
 
     };
 }

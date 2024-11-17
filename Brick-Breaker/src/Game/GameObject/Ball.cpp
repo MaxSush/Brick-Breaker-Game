@@ -1,53 +1,57 @@
 #include "Ball.h"
 
 
-Ball::Ball(GLFWwindow* window, glm::vec2 pos, float radius, const Texture& texture)
+Ball::Ball(glm::vec2 pos, float radius, const Texture& texture)
 	:
-	GameObject(window, pos, glm::vec2(radius * 2), texture),
+	GameObject(pos, glm::vec2(radius * 2), texture),
 	radius(radius)
 {
 }
 
-void Ball::Draw(SpriteRenderer& render)
+void Ball::Draw(SpriteRenderer* render)
 {
-	render.DrawSprite(texture, pos, size);
+	render->DrawSprite(texture, rect.pos, rect.size);
 }
 
 void Ball::Update(float dt)
 {
 	if (!stuck)
 	{
-		pos += glm::normalize(velocity) * speed * dt;
+		rect.pos += glm::normalize(velocity) * speed * dt;
 	}
 }
 
-void Ball::DoWallCollision(Rect& playzone)
+bool Ball::DoWallCollision(Rect& playzone)
 {
+	bool collided = false;
 	if (!stuck)
 	{
-		if (pos.x <= playzone.Left)
+		if (rect.pos.x < playzone.Left)
 		{
-			velocity.x = -velocity.x;
-			pos.x = playzone.Left;
+			ReboundX();
+			rect.pos.x = playzone.Left;
+			collided = true;
 		}
-		else if ((pos.x + size.x) >= playzone.Right)
+		else if ((rect.pos.x + rect.size.x) > playzone.Right)
 		{
-			velocity.x = -velocity.x;
-			pos.x = playzone.Right - size.x;
-		}
-
-		if (pos.y <= playzone.Top)
-		{
-			velocity.y = -velocity.y;
-			pos.y = playzone.Top;
-		}
-		else if ((pos.y + size.y) >= playzone.Bottom)
-		{
-			velocity.y = -velocity.y;
-			pos.y = playzone.Bottom - size.y;
+			ReboundX();
+			rect.pos.x = playzone.Right - rect.size.x;
+			collided = true;
 		}
 
+		if (rect.pos.y < playzone.Top)
+		{
+			ReboundY();
+			collided = true;
+		}
+		else if ((rect.pos.y + rect.size.y) > playzone.Bottom)
+		{
+			ReboundY();
+			rect.pos.y = playzone.Bottom - rect.size.y;
+			collided = true;
+		}
 	}
+	return collided;
 }
 
 void Ball::SetBall()
@@ -58,17 +62,32 @@ void Ball::SetBall()
 	}
 }
 
-const glm::vec2 Ball::GetPosition() const
+void Ball::ReboundX()
 {
-	return pos;
+	velocity.x = -velocity.x;
 }
 
-const glm::vec2 Ball::GetSize() const
+void Ball::ReboundY()
 {
-	return size;
+	velocity.y = -velocity.y;
 }
 
-const bool Ball::IsStuck() const
+Rect& Ball::GetRect()
+{
+	return rect;
+}
+
+glm::vec2& Ball::GetVelocity()
+{
+	return velocity;
+}
+
+float Ball::GetRadius() const
+{
+	return radius;
+}
+
+bool& Ball::IsStuck()
 {
 	return stuck;
 }
