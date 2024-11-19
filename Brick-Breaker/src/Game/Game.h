@@ -7,8 +7,9 @@
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
 #include "GameObject/Ball.h"
-#include <GameObject/ParticleGenerator.h>
-#include <GameObject/Paddle.h>
+#include "GameObject/ParticleGenerator.h"
+#include "GameObject/Paddle.h"
+#include "Process/Level.h"
 
 namespace Breaker
 {
@@ -30,17 +31,19 @@ namespace Breaker
         void Init();
         void Update(float dt);
         void Render();
+        void DoCollision();
 
     private:
         const WinProps* props;
-
         Rect playzone;
+        std::vector<Brick>* bricks = nullptr;
 
         GameState state = GameState::GAME_ACTIVE;
         SpriteRenderer* sprite = nullptr;
         Ball* ball = nullptr;
         ParticleGenerator* p_generator = nullptr;
         Paddle* paddle = nullptr;
+        GameLevel* level = nullptr;
 
     };
 }

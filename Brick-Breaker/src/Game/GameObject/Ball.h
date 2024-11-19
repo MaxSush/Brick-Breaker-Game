@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "../Window/KeyListner.h"
 #include "Utility/Rect.h"
-
+#include "Brick.h"
 
 class Ball : GameObject
 {
@@ -14,18 +14,22 @@ public:
 	void Draw(SpriteRenderer* render) override;
 	void Update(float dt);
 	bool DoWallCollision(Rect& playzone);
+	void DoBrickColision(Brick& b);
 	void SetBall();
 	void ReboundX();
 	void ReboundY();
 
 	Rect& GetRect();
 	glm::vec2& GetVelocity();
+	void SetVelocity(glm::vec2& new_vel);
 	float GetRadius() const;
 	bool& IsStuck();
 
 private:
-	glm::vec2 velocity = glm::vec2(-1.0f);
+	glm::vec2 velocity = glm::vec2(0.0f,-1.0f);
 	float radius;
 	float speed = 500;
 	bool stuck = true;
+
+	void dowork();
 };

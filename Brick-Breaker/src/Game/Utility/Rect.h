@@ -1,6 +1,17 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <tuple>
+
+enum Direction
+{
+	UP,
+	RIGHT,
+	DOWN,
+	LEFT
+};
+
+typedef std::tuple<bool, Direction, glm::vec2> Collision;
 
 class Rect
 {
@@ -9,6 +20,8 @@ public:
 	glm::vec2 pos, size = { 0,0 };
 
 	Rect(glm::vec2 pos, glm::vec2 size);
-	bool CheckCollision(Rect& other, float radius) const;		// AABB - Circle collision
+	glm::vec2 GetCenter() const;
+	Collision CheckCollision(Rect& other, float radius);		// AABB - Circle collision
 	bool CheckCollision(Rect& other) const;						// AABB - AABB collision
+	Direction VectorDirection(glm::vec2 target);
 };

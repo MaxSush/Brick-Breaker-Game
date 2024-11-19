@@ -15,7 +15,7 @@ add_library(Game STATIC
     GameObject/GameObject.cpp 
     GameObject/Ball.cpp
     "GameObject/ParticleGenerator.cpp" "GameObject/Paddle.h" "GameObject/Paddle.cpp" "Utility/Rect.cpp"
-)
+ "GameObject/Brick.h" "GameObject/Brick.cpp" "Process/Level.h" "Process/Level.cpp")
 
 
 target_include_directories(Game PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

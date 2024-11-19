@@ -1,4 +1,7 @@
 #include "Ball.h"
+#include "Ball.h"
+#include "Ball.h"
+#include "Ball.h"
 
 
 Ball::Ball(glm::vec2 pos, float radius, const Texture& texture)
@@ -54,6 +57,38 @@ bool Ball::DoWallCollision(Rect& playzone)
 	return collided;
 }
 
+void Ball::DoBrickColision(Brick& b)
+{
+	Rect& brick = b.GetRect();
+	Collision collision = brick.CheckCollision(rect, radius);
+	if (std::get<0>(collision))
+	{
+		if (!b.IsSolid())
+			b.SetIsDestroyed(true);
+
+		Direction dir = std::get<1>(collision);
+		glm::vec2 diff_vector = std::get<2>(collision);
+		if (dir == LEFT || dir == RIGHT)		// horizontal collision
+		{
+			ReboundX();							// reverse
+			float penetration = radius - std::abs(diff_vector.x);
+			if (dir == LEFT)
+				rect.pos.x += penetration;		// move right
+			else
+				rect.pos.x -= penetration;		// move left;
+		}
+		else
+		{
+			ReboundY();
+			float penetration = radius - std::abs(diff_vector.y);
+			if (dir == UP)
+				rect.pos.y -= penetration;		// move up
+			else
+				rect.pos.y += penetration;		// move down
+		}
+	}
+}
+
 void Ball::SetBall()
 {
 	if (KeyListner::isKeyPressed(GLFW_KEY_SPACE))
@@ -64,12 +99,12 @@ void Ball::SetBall()
 
 void Ball::ReboundX()
 {
-	velocity.x = -velocity.x;
+	velocity.x = -glm::normalize(velocity).x;
 }
 
 void Ball::ReboundY()
 {
-	velocity.y = -velocity.y;
+	velocity.y = -glm::normalize(velocity).y;
 }
 
 Rect& Ball::GetRect()
@@ -82,6 +117,11 @@ glm::vec2& Ball::GetVelocity()
 	return velocity;
 }
 
+void Ball::SetVelocity(glm::vec2& new_vel)
+{
+	velocity = new_vel;
+}
+
 float Ball::GetRadius() const
 {
 	return radius;
@@ -90,4 +130,8 @@ float Ball::GetRadius() const
 bool& Ball::IsStuck()
 {
 	return stuck;
+}
+
+void Ball::dowork()
+{
 }

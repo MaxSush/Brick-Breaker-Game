@@ -1,5 +1,6 @@
 #include "Paddle.h"
 #include "../Window/KeyListner.h"
+#include <algorithm>
 
 Paddle::Paddle(const Texture& texture, glm::vec2 pos, glm::vec2 size)
 	:
@@ -24,23 +25,16 @@ void Paddle::Update(float dt,Rect& playzone, Ball* ball)
 
 void Paddle::DoBallCollision(Ball* ball)
 {
-	if (!cooldown) {
+	if (!cooldown) 
+	{
 		if (rect.CheckCollision(ball->GetRect())) 
 		{
-			// get ball center
-			const glm::vec2 ballPos = ball->GetRect().pos + ball->GetRadius();
-			if (std::signbit(ball->GetVelocity().x) == std::signbit((ballPos - (rect.pos)).x))
-			{
-				ball->ReboundY();
-			}
-			else if (ballPos.x >= rect.Left && ballPos.x <= rect.Right)
-			{
-				ball->ReboundY();
-			}
-			else
-			{
-				ball->ReboundY();
-			}
+			float pad_center = rect.pos.x + (rect.size.x / 2.0f);
+			float distance = (ball->GetRect().pos.x + ball->GetRadius()) - pad_center;
+			float percentage = std::clamp(distance / (rect.size.x / 2.0f), -1.0f, 1.0f);
+			
+			glm::vec2 new_vel = { percentage,-1.0f };
+			ball->SetVelocity(new_vel);
 			cooldown = true;
 		}
 	}
