@@ -89,13 +89,47 @@ namespace Breaker
 
 	void Breaker::Game::DoCollision()
 	{
-		for (auto& b : *bricks)
+		bool collisionHappened = false;
+		float curColDist = 0.0;
+		int curColIndex = 0;
+		Collision collision;
+
+		for (size_t i = 0; i < bricks->size(); i++)
 		{
+			auto& b = (*bricks)[i];
+			Rect b_rect = b.GetRect();
+			Collision col = b_rect.CheckCollision(ball->GetRect(), ball->GetRadius());
 			if (!b.IsDestroyed())
 			{
-				paddle->SetCooldown();
-				ball->DoBrickColision(b);
+				if (std::get<0>(col))
+				{
+					const float newColDist = glm::length(ball->GetRect().GetCenter() - b.GetRect().GetCenter());
+					if (collisionHappened)
+					{
+						if (newColDist < curColDist)
+						{
+							curColDist = newColDist;
+							curColIndex = i;
+							collision = col;
+						}
+					}
+					else
+					{
+						curColDist = newColDist;
+						curColIndex = i;
+						collision = col;
+						collisionHappened = true;
+					}
+				}
 			}
+		}
+		if (collisionHappened)
+		{
+			auto& b = (*bricks)[curColIndex];
+			if (!b.IsSolid())
+				b.SetIsDestroyed(true);
+			paddle->SetCooldown();
+			ball->DoBrickColision(collision);
 		}
 	}
 }

@@ -57,35 +57,27 @@ bool Ball::DoWallCollision(Rect& playzone)
 	return collided;
 }
 
-void Ball::DoBrickColision(Brick& b)
+void Ball::DoBrickColision(Collision& collision)
 {
-	Rect& brick = b.GetRect();
-	Collision collision = brick.CheckCollision(rect, radius);
-	if (std::get<0>(collision))
+	Direction dir = std::get<1>(collision);
+	glm::vec2 diff_vector = std::get<2>(collision);
+	if (dir == LEFT || dir == RIGHT)		// horizontal collision
 	{
-		if (!b.IsSolid())
-			b.SetIsDestroyed(true);
-
-		Direction dir = std::get<1>(collision);
-		glm::vec2 diff_vector = std::get<2>(collision);
-		if (dir == LEFT || dir == RIGHT)		// horizontal collision
-		{
-			ReboundX();							// reverse
-			float penetration = radius - std::abs(diff_vector.x);
-			if (dir == LEFT)
-				rect.pos.x += penetration;		// move right
-			else
-				rect.pos.x -= penetration;		// move left;
-		}
+		ReboundX();							// reverse
+		float penetration = radius - std::abs(diff_vector.x);
+		if (dir == LEFT)
+			rect.pos.x += penetration;		// move right
 		else
-		{
-			ReboundY();
-			float penetration = radius - std::abs(diff_vector.y);
-			if (dir == UP)
-				rect.pos.y -= penetration;		// move up
-			else
-				rect.pos.y += penetration;		// move down
-		}
+			rect.pos.x -= penetration;		// move left;
+	}
+	else
+	{
+		ReboundY();
+		float penetration = radius - std::abs(diff_vector.y);
+		if (dir == UP)
+			rect.pos.y -= penetration;		// move up
+		else
+			rect.pos.y += penetration;		// move down
 	}
 }
 

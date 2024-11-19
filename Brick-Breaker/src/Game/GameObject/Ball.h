@@ -14,7 +14,7 @@ public:
 	void Draw(SpriteRenderer* render) override;
 	void Update(float dt);
 	bool DoWallCollision(Rect& playzone);
-	void DoBrickColision(Brick& b);
+	void DoBrickColision(Collision& collision);
 	void SetBall();
 	void ReboundX();
 	void ReboundY();
