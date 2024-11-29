@@ -123,7 +123,3 @@ bool& Ball::IsStuck()
 {
 	return stuck;
 }
-
-void Ball::dowork()
-{
-}

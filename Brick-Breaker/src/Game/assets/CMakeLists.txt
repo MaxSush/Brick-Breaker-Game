@@ -17,6 +17,8 @@ set(TEXTURE_FILES
     textures/paddle.png
     textures/brick.png
     textures/solid.png
+    textures/bevel.png
+
 )
 
 set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin/assets)

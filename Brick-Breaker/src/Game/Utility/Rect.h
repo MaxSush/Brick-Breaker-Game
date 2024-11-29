@@ -20,6 +20,7 @@ public:
 	glm::vec2 pos, size = { 0,0 };
 
 	Rect(glm::vec2 pos, glm::vec2 size);
+	Rect(float Left, float Top, float Right, float Bottom);
 	glm::vec2 GetCenter() const;
 	Collision CheckCollision(Rect& other, float radius);		// AABB - Circle collision
 	bool CheckCollision(Rect& other) const;						// AABB - AABB collision

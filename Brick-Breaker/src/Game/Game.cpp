@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Game.h"
+#include "Game.h"
 
 #include "../Window/glfw_window.h"
 #include <iostream>
@@ -9,7 +10,7 @@ namespace Breaker
 	Game::Game(const WinProps* props)
 		:
 		props(props),
-		playzone(Rect(glm::vec2(0, 0), glm::vec2(props->width, props->height)))
+		playzone(Rect(offset,offset,900 - offset,700 - offset))
 	{
 	}
 
@@ -32,14 +33,14 @@ namespace Breaker
 		ResourceManager::LoadTexture("assets/brick.png", true, "brick");
 		ResourceManager::LoadTexture("assets/solid.png", true, "solid");
 
-		ResourceManager::LoadShader("assets/cubeShader.vs", "assets/cubeShader.fg", "cube");
+		ResourceManager::LoadShader("assets/cubeShader.vs", "assets/cubeShader.fg", "sprite");
 		ResourceManager::LoadShader("assets/particle.vs", "assets/particle.fg", "particle");
 
-		sprite = new SpriteRenderer(ResourceManager::GetShader("cube"));
+		sprite = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 		p_generator = new ParticleGenerator(ResourceManager::GetTexture("particle"), ResourceManager::GetShader("particle"));
 
 		glm::vec2 paddle_size = { 135.0f,20.0f };
-		glm::vec2 paddle_pos = { (props->width / 2.0f) - (paddle_size.x / 2.0f),props->height - (paddle_size.y * 2.0f)  - 100 };
+		glm::vec2 paddle_pos = { (playzone.Right / 2.0f) - (paddle_size.x / 2.0f),playzone.Bottom - (paddle_size.y * 2.0f) };
 		paddle = new Paddle(ResourceManager::GetTexture("paddle"), paddle_pos, paddle_size);
 
 		float ball_radius = 10.0f;
@@ -47,7 +48,7 @@ namespace Breaker
 		ball = new Ball(ball_pos, ball_radius, ResourceManager::GetTexture("ball"));
 
 		level = new GameLevel();
-		level->LoadLevel("assets/1level.lvl", static_cast<int>(props->width), static_cast<int>(props->height / 4.0f));
+		level->LoadLevel("assets/1level.lvl", playzone);
 		bricks = level->GetBricks();
 	}
 
@@ -73,9 +74,10 @@ namespace Breaker
 
 	void Game::Render()
 	{
+
 		if (state == GameState::GAME_ACTIVE)
 		{
-			sprite->DrawSprite(ResourceManager::GetTexture("background"), glm::vec2(0.0f, 0.0f), glm::vec2(900.0f, 700.0f));
+			sprite->DrawSprite(ResourceManager::GetTexture("background"), playzone.pos, playzone.size);
 			level->Draw(sprite);
 			paddle->Draw(sprite);
 			ball->Draw(sprite);
@@ -87,49 +89,47 @@ namespace Breaker
 		}
 	}
 
+	// fix for multiple collision at single touch
 	void Breaker::Game::DoCollision()
 	{
 		bool collisionHappened = false;
-		float curColDist = 0.0;
-		int curColIndex = 0;
+		float curColDist = std::numeric_limits<float>::max();
+		int curColIndex = -1;
 		Collision collision;
 
-		for (size_t i = 0; i < bricks->size(); i++)
+		for (int i = 0; i < bricks->size(); i++)
 		{
 			auto& b = (*bricks)[i];
+			if (b.IsDestroyed())
+				continue; // Skip destroyed bricks
+
 			Rect b_rect = b.GetRect();
 			Collision col = b_rect.CheckCollision(ball->GetRect(), ball->GetRadius());
-			if (!b.IsDestroyed())
-			{
-				if (std::get<0>(col))
+
+			if (std::get<0>(col)) 
+			{ // Collision occurred
+				float newColDist = glm::length(ball->GetRect().GetCenter() - b_rect.GetCenter());
+				if (newColDist < curColDist) 
 				{
-					const float newColDist = glm::length(ball->GetRect().GetCenter() - b.GetRect().GetCenter());
-					if (collisionHappened)
-					{
-						if (newColDist < curColDist)
-						{
-							curColDist = newColDist;
-							curColIndex = i;
-							collision = col;
-						}
-					}
-					else
-					{
-						curColDist = newColDist;
-						curColIndex = i;
-						collision = col;
-						collisionHappened = true;
-					}
+					curColDist = newColDist;
+					curColIndex = i;
+					collision = col;
+					collisionHappened = true;
 				}
 			}
 		}
-		if (collisionHappened)
+		if (collisionHappened && curColIndex != -1) 
 		{
 			auto& b = (*bricks)[curColIndex];
 			if (!b.IsSolid())
 				b.SetIsDestroyed(true);
+
 			paddle->SetCooldown();
 			ball->DoBrickColision(collision);
 		}
+	}
+	void Breaker::Game::DrawBeveler()
+	{
+
 	}
 }

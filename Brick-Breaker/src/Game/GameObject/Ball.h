@@ -28,8 +28,6 @@ public:
 private:
 	glm::vec2 velocity = glm::vec2(0.0f,-1.0f);
 	float radius;
-	float speed = 500;
+	float speed = 700;
 	bool stuck = true;
-
-	void dowork();
 };

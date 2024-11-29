@@ -1,5 +1,6 @@
 #include "Rect.h"
 #include "Rect.h"
+#include "Rect.h"
 
 Rect::Rect(glm::vec2 pos, glm::vec2 size)
 	: pos(pos), size(size)
@@ -8,6 +9,17 @@ Rect::Rect(glm::vec2 pos, glm::vec2 size)
 	Right = pos.x + size.x;
 	Top = pos.y;
 	Bottom = pos.y + size.y;
+}
+
+Rect::Rect(float Left, float Top, float Right, float Bottom)
+	:
+	Left(Left),
+	Right(Right),
+	Top(Top),
+	Bottom(Bottom)
+{
+	pos = glm::vec2(Left, Top);
+	size = glm::vec2(Right - pos.x, Bottom - pos.y);
 }
 
 glm::vec2 Rect::GetCenter() const

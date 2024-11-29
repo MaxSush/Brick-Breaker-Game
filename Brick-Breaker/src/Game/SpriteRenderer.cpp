@@ -1,4 +1,5 @@
 #include "SpriteRenderer.h"
+#include "SpriteRenderer.h"
 
 SpriteRenderer::SpriteRenderer(const Shader& shader)
 	:
@@ -9,6 +10,23 @@ SpriteRenderer::SpriteRenderer(const Shader& shader)
 
 SpriteRenderer::~SpriteRenderer()
 {
+}
+
+void SpriteRenderer::DrawCube(glm::vec2 pos, glm::vec2 size, glm::vec4 color)
+{
+	shader.Activate();
+	glm::mat4 projection = glm::ortho(0.0f, 900.0f, 700.0f, 0.0f, -1.0f, 1.0f);
+
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(pos, 0.0f));
+	model = glm::scale(model, glm::vec3(size, 1.0f));
+
+	shader.setMat4("projection", projection);
+	shader.setMat4("model", model);
+	shader.setVec4("spriteColor", color);
+	vao.Bind();
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	vao.Unbind();
 }
 
 void SpriteRenderer::DrawSprite(const Texture& texture, glm::vec2 pos, glm::vec2 size, glm::vec4 color)

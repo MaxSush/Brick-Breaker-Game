@@ -16,7 +16,7 @@ public:
 	void SetCooldown();
 private:
 	glm::vec2 velocity = { 0,0 };
-	float speed = 350;
+	float speed = 550;
 	bool cooldown = false;
 
 	void DoWallCollision(Rect& playzone, Ball* ball);

@@ -5,7 +5,7 @@ GameLevel::GameLevel()
 {
 }
 
-void GameLevel::LoadLevel(const char* lvl_file, unsigned int level_width, unsigned int level_height)
+void GameLevel::LoadLevel(const char* lvl_file, Rect playzone)
 {
 	bricks.clear();
 	unsigned int tilecode;
@@ -25,7 +25,7 @@ void GameLevel::LoadLevel(const char* lvl_file, unsigned int level_width, unsign
 		}
 		if (tiledata.size() > 0)
 		{
-			Init(tiledata, level_width, level_height);
+			Init(tiledata, playzone);
 		}
 	}
 }
@@ -58,16 +58,15 @@ std::vector<Brick>* GameLevel::GetBricks()
 	return &bricks;
 }
 
-void GameLevel::Init(std::vector<std::vector<unsigned int>> tiledata, unsigned int level_width, unsigned int level_height)
+void GameLevel::Init(std::vector<std::vector<unsigned int>> tiledata, Rect playzone)
 {
-	int offset = 0;
+	float offset = 10.0f;
 	const size_t height = tiledata.size();
 	const size_t width = tiledata[0].size();
 
-	level_width		=	level_width - offset;
-	level_height	=	level_height - offset;
-	const float unit_width	=	level_width / static_cast<float>(width);
-	const float unit_height =	level_height / static_cast<float>(height);
+	const float unit_width	=	(playzone.Right - playzone.pos.y - (offset * 2)) / static_cast<float>(width);
+	const float unit_height =	((playzone.Bottom / 4.0f) - playzone.pos.y) / static_cast<float>(height);
+
 
 	for (unsigned int y = 0; y < height; ++y)
 	{
@@ -75,7 +74,7 @@ void GameLevel::Init(std::vector<std::vector<unsigned int>> tiledata, unsigned i
 		{
 			if (tiledata[y][x] == 1)		// solid
 			{
-				glm::vec2 pos(unit_width * x, unit_height * y);
+				glm::vec2 pos = glm::vec2(unit_width * x, unit_height * y) + playzone.pos + offset;
 				glm::vec2 size(unit_width, unit_height);
 				glm::vec4 color(glm::vec4(0.8f, 0.8f, 0.7f, 1.0f));
 				Brick solid(ResourceManager::GetTexture("solid"), pos, size);
@@ -95,7 +94,7 @@ void GameLevel::Init(std::vector<std::vector<unsigned int>> tiledata, unsigned i
 				else if (tiledata[y][x] == 5)
 					color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);;
 
-				glm::vec2 pos(unit_width * x, unit_height * y);
+				glm::vec2 pos = glm::vec2(unit_width * x, unit_height * y) + playzone.pos + offset;
 				glm::vec2 size(unit_width, unit_height);
 				Brick brick(ResourceManager::GetTexture("brick"), pos, size);
 				brick.SetColor(color);
