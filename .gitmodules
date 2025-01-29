@@ -1,3 +1,3 @@
-[submodule "Far-Annoyed/external/glfw"]
-	path = Far-Annoyed/external/glfw
+[submodule "Brick-Breaker/external/glfw"]
+	path = Brick-Breaker/external/glfw
 	url = https://github.com/MaxSush/glfw.git

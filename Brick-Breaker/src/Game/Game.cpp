@@ -1,8 +1,7 @@
 #include "Game.h"
 #include "Game.h"
-#include "Game.h"
-
 #include "../Window/glfw_window.h"
+#include "Utility/ImGuiLayer.h"
 #include <iostream>
 
 namespace Breaker
@@ -16,6 +15,7 @@ namespace Breaker
 
 	Game::~Game()
 	{
+		ImGuiLayer::Shutdown();
 		ResourceManager::Clear();
 		delete sprite;
 		delete ball;
@@ -32,6 +32,8 @@ namespace Breaker
 		ResourceManager::LoadTexture("assets/paddle.png", true, "paddle");
 		ResourceManager::LoadTexture("assets/brick.png", true, "brick");
 		ResourceManager::LoadTexture("assets/solid.png", true, "solid");
+		ResourceManager::LoadTexture("assets/bevel.png", true, "bevel");
+
 
 		ResourceManager::LoadShader("assets/cubeShader.vs", "assets/cubeShader.fg", "sprite");
 		ResourceManager::LoadShader("assets/particle.vs", "assets/particle.fg", "particle");
@@ -50,6 +52,9 @@ namespace Breaker
 		level = new GameLevel();
 		level->LoadLevel("assets/1level.lvl", playzone);
 		bricks = level->GetBricks();
+		
+		// Imgui Implementation
+		ImGuiLayer::Init(props->window);
 	}
 
 	void Game::Update(float dt)
@@ -86,6 +91,8 @@ namespace Breaker
 			{
 				p_generator->Draw();
 			}
+			//DrawImGuiLayer();
+			sprite->DrawSprite(ResourceManager::GetTexture("bevel"), { 0,0 }, { props->width, props->height }, { 0.0f, 0.8f, 0.8f, 1.0f });
 		}
 	}
 
@@ -128,8 +135,13 @@ namespace Breaker
 			ball->DoBrickColision(collision);
 		}
 	}
-	void Breaker::Game::DrawBeveler()
-	{
 
+	void Game::DrawImGuiLayer()
+	{
+		ImGuiLayer::BeginFrame();
+
+		ImGui::End();
+
+		ImGuiLayer::EndFrame();
 	}
 }

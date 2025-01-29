@@ -11,7 +11,8 @@ namespace Breaker
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        glfwWindowHint(GLFW_RESIZABLE, false);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        std::cout << glfwGetVersionString() << "\n";
 
         Init();
     }

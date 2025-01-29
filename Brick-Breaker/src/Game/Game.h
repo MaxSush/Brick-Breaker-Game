@@ -32,9 +32,12 @@ namespace Breaker
         void Update(float dt);
         void Render();
         void DoCollision();
-        void DrawBeveler();
+
+        // imgui
+        void DrawImGuiLayer();
+
     private:
-        static constexpr float offset = 10.0f;
+        static constexpr float offset = 20.0f;
         const WinProps* props;
         Rect playzone;
         std::vector<Brick>* bricks = nullptr;
