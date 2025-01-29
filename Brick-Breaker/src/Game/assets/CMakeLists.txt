@@ -8,6 +8,8 @@ set(SHADER_FILES
     shaders/cubeShader.vs
     shaders/particle.fg
     shaders/particle.vs
+    shaders/postProcessing.vs
+    shaders/postProcessing.fg
 )
 
 set(TEXTURE_FILES

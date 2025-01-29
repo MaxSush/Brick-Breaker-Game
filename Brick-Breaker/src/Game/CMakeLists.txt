@@ -15,7 +15,7 @@ add_library(Game STATIC
     GameObject/GameObject.cpp 
     GameObject/Ball.cpp
     "GameObject/ParticleGenerator.cpp" "GameObject/Paddle.h" "GameObject/Paddle.cpp" "Utility/Rect.cpp"
- "GameObject/Brick.h" "GameObject/Brick.cpp" "Process/Level.h" "Process/Level.cpp" "Utility/ImGuiLayer.h" "Utility/ImGuiLayer.cpp")
+ "GameObject/Brick.h" "GameObject/Brick.cpp" "Process/Level.h" "Process/Level.cpp" "Utility/ImGuiLayer.h" "Utility/ImGuiLayer.cpp" "Process/GamePostProcessing.cpp" "Process/GamePostProcessing.h" "Process/PowerUps.cpp" "Process/PowerUps.h")
 
 
 target_include_directories(Game PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

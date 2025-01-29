@@ -17,11 +17,12 @@ namespace Breaker
 	{
 		ImGuiLayer::Shutdown();
 		ResourceManager::Clear();
-		delete sprite;
-		delete ball;
-		delete p_generator;
-		delete paddle;
+		delete effects;
 		delete level;
+		delete paddle;
+		delete p_generator;
+		delete ball;
+		delete sprite;
 	}
 
 	void Game::Init()
@@ -34,9 +35,9 @@ namespace Breaker
 		ResourceManager::LoadTexture("assets/solid.png", true, "solid");
 		ResourceManager::LoadTexture("assets/bevel.png", true, "bevel");
 
-
 		ResourceManager::LoadShader("assets/cubeShader.vs", "assets/cubeShader.fg", "sprite");
 		ResourceManager::LoadShader("assets/particle.vs", "assets/particle.fg", "particle");
+		ResourceManager::LoadShader("assets/postProcessing.vs", "assets/postProcessing.fg", "postprocessor");
 
 		sprite = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 		p_generator = new ParticleGenerator(ResourceManager::GetTexture("particle"), ResourceManager::GetShader("particle"));
@@ -53,6 +54,7 @@ namespace Breaker
 		level->LoadLevel("assets/1level.lvl", playzone);
 		bricks = level->GetBricks();
 		
+		effects = new GameEffects(ResourceManager::GetShader("postprocessor"), props->width, props->height);
 		// Imgui Implementation
 		ImGuiLayer::Init(props->window);
 	}
@@ -64,6 +66,12 @@ namespace Breaker
 
 		if (!ball->IsStuck())
 		{
+			if (shakeTime > 0.0f) {
+				shakeTime -= dt;
+				if (shakeTime <= 0.0f) {
+					effects->shake = false;
+				}
+			}
 			DoCollision();
 			ball->Update(dt);
 
@@ -82,6 +90,7 @@ namespace Breaker
 
 		if (state == GameState::GAME_ACTIVE)
 		{
+			effects->BeginRender();
 			sprite->DrawSprite(ResourceManager::GetTexture("background"), playzone.pos, playzone.size);
 			level->Draw(sprite);
 			paddle->Draw(sprite);
@@ -92,6 +101,8 @@ namespace Breaker
 				p_generator->Draw();
 			}
 			//DrawImGuiLayer();
+			effects->EndRender();
+			effects->Render(glfwGetTime());
 			sprite->DrawSprite(ResourceManager::GetTexture("bevel"), { 0,0 }, { props->width, props->height }, { 0.0f, 0.8f, 0.8f, 1.0f });
 		}
 	}
@@ -130,7 +141,10 @@ namespace Breaker
 			auto& b = (*bricks)[curColIndex];
 			if (!b.IsSolid())
 				b.SetIsDestroyed(true);
-
+			else {
+				shakeTime = 0.40f;
+				effects->shake = true;
+			}
 			paddle->SetCooldown();
 			ball->DoBrickColision(collision);
 		}

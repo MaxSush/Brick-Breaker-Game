@@ -10,6 +10,7 @@
 #include "GameObject/ParticleGenerator.h"
 #include "GameObject/Paddle.h"
 #include "Process/Level.h"
+#include <Process/GamePostProcessing.h>
 
 namespace Breaker
 {
@@ -48,6 +49,8 @@ namespace Breaker
         ParticleGenerator* p_generator = nullptr;
         Paddle* paddle = nullptr;
         GameLevel* level = nullptr;
+        GameEffects* effects = nullptr;
 
+        float shakeTime = 0.0f;
     };
 }

@@ -67,6 +67,13 @@ void GameLevel::Init(std::vector<std::vector<unsigned int>> tiledata, Rect playz
 	const float unit_width	=	(playzone.Right - playzone.pos.y - (offset * 2)) / static_cast<float>(width);
 	const float unit_height =	((playzone.Bottom / 4.0f) - playzone.pos.y) / static_cast<float>(height);
 
+	/*
+	*  1 ==> solid
+	*  2 ==> blue
+	*  3 ==> green
+	*  4 ==> yellow
+	*  5 ==> red
+	*/
 
 	for (unsigned int y = 0; y < height; ++y)
 	{
