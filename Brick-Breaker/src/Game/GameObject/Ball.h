@@ -21,13 +21,15 @@ public:
 
 	Rect& GetRect();
 	glm::vec2& GetVelocity();
-	void SetVelocity(glm::vec2& new_vel);
+	void SetVelocity(glm::vec2 new_vel);
 	float GetRadius() const;
 	bool& IsStuck();
+	void SetSpeed(float multiplier);
 
+	bool stuck = true;
+	bool pass_through = false;
 private:
-	glm::vec2 velocity = glm::vec2(0.0f,-1.0f);
+	glm::vec2 velocity = { 0.0f,-1.0f };
 	float radius;
 	float speed = 700;
-	bool stuck = true;
 };

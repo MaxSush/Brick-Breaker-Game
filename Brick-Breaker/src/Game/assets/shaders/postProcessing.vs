@@ -14,8 +14,8 @@ void main()
     vec2 texture = vertex.zw;
     if(chaos)
     {
-        float strength = 0.3;
-        vec2 pos = vec2(texture.x + sin(time) * strength, texture.y + cos(time) * strength);        
+        float strength = 0.2;
+        vec2 pos = vec2(texture.x + sin(time) * strength, texture.y + cos(time) * strength / 4.0f);        
         TexCoords = pos;
     }
     else if(confuse)
@@ -28,8 +28,9 @@ void main()
     }
     if (shake)
     {
-        float strength = 0.01;
-        gl_Position.x += cos(time * 10) * strength;        
-        gl_Position.y += cos(time * 15) * strength;        
+        float strength = 0.007;                             // Reduce strength for shorter displacement
+        gl_Position.x += cos(time * 100.0) * strength;       // Increase frequency
+        gl_Position.y += sin(time * 150.0) * strength;       // Use sin for variation
+       
     }
 }

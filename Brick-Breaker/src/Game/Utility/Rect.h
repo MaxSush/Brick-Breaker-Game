@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <tuple>
+#include <random>
 
 enum Direction
 {
@@ -25,4 +26,5 @@ public:
 	Collision CheckCollision(Rect& other, float radius);		// AABB - Circle collision
 	bool CheckCollision(Rect& other) const;						// AABB - AABB collision
 	Direction VectorDirection(glm::vec2 target);
+	static std::mt19937 rng;
 };

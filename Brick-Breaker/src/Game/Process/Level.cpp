@@ -65,9 +65,10 @@ void GameLevel::Init(std::vector<std::vector<unsigned int>> tiledata, Rect playz
 	const size_t width = tiledata[0].size();
 
 	const float unit_width	=	(playzone.Right - playzone.pos.y - (offset * 2)) / static_cast<float>(width);
-	const float unit_height =	((playzone.Bottom / 4.0f) - playzone.pos.y) / static_cast<float>(height);
+	const float unit_height =	((playzone.Bottom / 3.0f) - playzone.pos.y) / static_cast<float>(height);
 
 	/*
+	*  0 ==> none
 	*  1 ==> solid
 	*  2 ==> blue
 	*  3 ==> green

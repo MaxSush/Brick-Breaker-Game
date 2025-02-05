@@ -1,11 +1,10 @@
 #include "ParticleGenerator.h"
+#include "ParticleGenerator.h"
 #include <random>
 
 static float getRandomFloat(float min, float max) {
-	std::random_device rd;  // Seed
-	std::mt19937 gen(rd()); // Random number generator
 	std::uniform_real_distribution<> distr(min, max); // Define range
-	return static_cast<float>(distr(gen));
+	return static_cast<float>(distr(Rect::rng));
 }
 
 ParticleGenerator::ParticleGenerator(const Texture& texture, const Shader& shader)
@@ -62,6 +61,12 @@ void ParticleGenerator::Update(float dt, Ball* ball)
 		}
 	}
 
+}
+
+void ParticleGenerator::ClearParticles()
+{
+	if (!particles.empty())
+			particles.clear();
 }
 
 void ParticleGenerator::Spawn(Ball* ball)

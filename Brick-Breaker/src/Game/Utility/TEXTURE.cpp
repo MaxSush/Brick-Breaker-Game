@@ -42,7 +42,7 @@ void Texture::LoadePng(const char *filename)
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
-		std::cout << "Failed to load texture" << std::endl;
+		std::cout << "Failed to load texture: " << filename << std::endl;
 	}
 
 	stbi_image_free(data);
@@ -60,7 +60,8 @@ void Texture::LoadImage(const char *filename)
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
-		std::cout << "Failed to load texture" << std::endl;
+		std::cout << "Failed to load texture: " << filename << std::endl;
+
 	}
 
 	stbi_image_free(data);

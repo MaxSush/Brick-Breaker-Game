@@ -1,8 +1,4 @@
 #include "Ball.h"
-#include "Ball.h"
-#include "Ball.h"
-#include "Ball.h"
-
 
 Ball::Ball(glm::vec2 pos, float radius, const Texture& texture)
 	:
@@ -13,7 +9,15 @@ Ball::Ball(glm::vec2 pos, float radius, const Texture& texture)
 
 void Ball::Draw(SpriteRenderer* render)
 {
-	render->DrawSprite(texture, rect.pos, rect.size);
+	glm::vec4 color = glm::vec4(1.0f);
+	if (stuck) {
+		color = { 1.0f, 0.5f, 1.0f , 1.0f };
+	}
+	else if (pass_through)
+	{
+		color = { 1.0f, 0.5f, 0.5f ,1.0f };
+	}
+	render->DrawSprite(texture, rect.pos, rect.size, color);
 }
 
 void Ball::Update(float dt)
@@ -109,7 +113,7 @@ glm::vec2& Ball::GetVelocity()
 	return velocity;
 }
 
-void Ball::SetVelocity(glm::vec2& new_vel)
+void Ball::SetVelocity(glm::vec2 new_vel)
 {
 	velocity = new_vel;
 }
@@ -122,4 +126,9 @@ float Ball::GetRadius() const
 bool& Ball::IsStuck()
 {
 	return stuck;
+}
+
+void Ball::SetSpeed(float multiplier)
+{
+	speed *= multiplier;
 }

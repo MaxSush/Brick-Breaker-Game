@@ -18,7 +18,6 @@ public:
 	void SetIsDestroyed(bool val);
 
 	Rect& GetRect();
-
 private:
 	glm::vec4 color = { 1,1,1,1 };
 	bool is_solid = false;

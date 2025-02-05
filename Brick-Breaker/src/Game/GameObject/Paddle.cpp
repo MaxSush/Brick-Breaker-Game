@@ -1,4 +1,5 @@
 #include "Paddle.h"
+#include "Paddle.h"
 #include "../Window/KeyListner.h"
 #include <algorithm>
 
@@ -17,7 +18,8 @@ void Paddle::Update(float dt,Rect& playzone, Ball* ball)
 	glm::vec2 delta = velocity * speed * dt;
 	rect.pos += delta;
 	if (ball->IsStuck()) {
-		ball->GetRect().pos.x += delta.x;
+		ball->GetRect().pos = glm::vec2{ rect.size.x / 2.0f - ball->GetRadius(), -ball->GetRadius() * 2.0f} + rect.pos;
+		ball->SetVelocity({0.0f,-1.0f});
 	}
 
 	DoWallCollision(playzone, ball);
@@ -48,6 +50,11 @@ void Paddle::Draw(SpriteRenderer* render)
 void Paddle::SetCooldown()
 {
 	cooldown = false;
+}
+
+Rect& Paddle::GetRect()
+{
+	return this->rect;
 }
 
 void Paddle::DoWallCollision(Rect& playzone, Ball* ball)

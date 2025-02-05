@@ -22,6 +22,7 @@ public:
 	~ParticleGenerator();
 	void Draw();
 	void Update(float dt, Ball* ball);
+	void ClearParticles();
 private:
 	Texture texture;
 	Shader shader;

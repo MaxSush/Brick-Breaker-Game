@@ -20,7 +20,12 @@ set(TEXTURE_FILES
     textures/brick.png
     textures/solid.png
     textures/bevel.png
-
+    textures/powerup_passthrough.png
+    textures/powerup_chaos.png
+    textures/powerup_confuse.png
+    textures/powerup_increase.png
+    textures/powerup_speed.png
+    textures/powerup_sticky.png
 )
 
 set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin/assets)

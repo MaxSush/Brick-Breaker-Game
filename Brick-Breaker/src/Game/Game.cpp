@@ -1,7 +1,5 @@
 #include "Game.h"
-#include "Game.h"
 #include "../Window/glfw_window.h"
-#include "Utility/ImGuiLayer.h"
 #include <iostream>
 
 namespace Breaker
@@ -15,7 +13,6 @@ namespace Breaker
 
 	Game::~Game()
 	{
-		ImGuiLayer::Shutdown();
 		ResourceManager::Clear();
 		delete effects;
 		delete level;
@@ -32,8 +29,15 @@ namespace Breaker
 		ResourceManager::LoadTexture("assets/particle.png", true, "particle");
 		ResourceManager::LoadTexture("assets/paddle.png", true, "paddle");
 		ResourceManager::LoadTexture("assets/brick.png", true, "brick");
-		ResourceManager::LoadTexture("assets/solid.png", true, "solid");
+		ResourceManager::LoadTexture("assets/solid.png", false, "solid");
 		ResourceManager::LoadTexture("assets/bevel.png", true, "bevel");
+
+		ResourceManager::LoadTexture("assets/powerup_passthrough.png", true, "passthrough");
+		ResourceManager::LoadTexture("assets/powerup_chaos.png", true, "chaos");
+		ResourceManager::LoadTexture("assets/powerup_confuse.png", true, "confuse");
+		ResourceManager::LoadTexture("assets/powerup_increase.png", true, "increase");
+		ResourceManager::LoadTexture("assets/powerup_speed.png", true, "speed");
+		ResourceManager::LoadTexture("assets/powerup_sticky.png", true, "sticky");
 
 		ResourceManager::LoadShader("assets/cubeShader.vs", "assets/cubeShader.fg", "sprite");
 		ResourceManager::LoadShader("assets/particle.vs", "assets/particle.fg", "particle");
@@ -55,33 +59,37 @@ namespace Breaker
 		bricks = level->GetBricks();
 		
 		effects = new GameEffects(ResourceManager::GetShader("postprocessor"), props->width, props->height);
-		// Imgui Implementation
-		ImGuiLayer::Init(props->window);
 	}
 
 	void Game::Update(float dt)
 	{
 		paddle->Update(dt, playzone, ball);
 		ball->SetBall();
-
+		powerups.UpdatePowerUps(dt, playzone, ball, effects);
+		if (shakeTime > 0.0f) {
+			shakeTime -= dt;
+			if (shakeTime <= 0.0f) {
+				effects->shake = false;
+			}
+		}
 		if (!ball->IsStuck())
 		{
-			if (shakeTime > 0.0f) {
-				shakeTime -= dt;
-				if (shakeTime <= 0.0f) {
-					effects->shake = false;
-				}
-			}
-			DoCollision();
+			FixBallBrickCollision();
 			ball->Update(dt);
-
 			paddle->DoBallCollision(ball);
-
+			PowerUps::PowerBlock* block = powerups.CheckCollision(paddle->GetRect());
+			if (block != nullptr) {
+				ActivatePowerUps(block);
+			}
 			if (ball->DoWallCollision(playzone))
 			{
 				paddle->SetCooldown();
 			}
 			p_generator->Update(dt, ball);
+		}
+		else
+		{
+			p_generator->ClearParticles();
 		}
 	}
 
@@ -93,6 +101,7 @@ namespace Breaker
 			effects->BeginRender();
 			sprite->DrawSprite(ResourceManager::GetTexture("background"), playzone.pos, playzone.size);
 			level->Draw(sprite);
+			powerups.DrawPowerUps(sprite);
 			paddle->Draw(sprite);
 			ball->Draw(sprite);
 
@@ -100,15 +109,14 @@ namespace Breaker
 			{
 				p_generator->Draw();
 			}
-			//DrawImGuiLayer();
 			effects->EndRender();
-			effects->Render(glfwGetTime());
+			effects->Render(float(glfwGetTime()));
 			sprite->DrawSprite(ResourceManager::GetTexture("bevel"), { 0,0 }, { props->width, props->height }, { 0.0f, 0.8f, 0.8f, 1.0f });
 		}
 	}
 
 	// fix for multiple collision at single touch
-	void Breaker::Game::DoCollision()
+	void Breaker::Game::FixBallBrickCollision()
 	{
 		bool collisionHappened = false;
 		float curColDist = std::numeric_limits<float>::max();
@@ -136,26 +144,56 @@ namespace Breaker
 				}
 			}
 		}
-		if (collisionHappened && curColIndex != -1) 
+		if (collisionHappened && curColIndex != -1)
 		{
 			auto& b = (*bricks)[curColIndex];
-			if (!b.IsSolid())
-				b.SetIsDestroyed(true);
-			else {
-				shakeTime = 0.40f;
+			paddle->SetCooldown();
+			if (!ball->pass_through || !b.IsSolid()) {
+				ball->DoBrickColision(collision);
+				if (!b.IsSolid()) {
+					b.SetIsDestroyed(true);
+					powerups.SpawnPowerUps(b.GetRect());
+				}
+			}
+			if (!ball->pass_through && b.IsSolid()) {
+				shakeTime = 0.10f;
 				effects->shake = true;
 			}
-			paddle->SetCooldown();
-			ball->DoBrickColision(collision);
 		}
 	}
 
-	void Game::DrawImGuiLayer()
+	void Game::ActivatePowerUps(PowerUps::PowerBlock* block)
 	{
-		ImGuiLayer::BeginFrame();
-
-		ImGui::End();
-
-		ImGuiLayer::EndFrame();
+		if (block->type == PowerType::SPEED)
+		{
+			ball->SetSpeed(1.2f);
+		}
+		else if (block->type == PowerType::STICKY)
+		{
+			ball->stuck = true;
+		}
+		else if (block->type == PowerType::PAD_SIZE_INCREASE)
+		{
+			paddle->GetRect().size.x += 50;
+			paddle->GetRect().size.y += 1;
+		}
+		else if (block->type == PowerType::PASS_THROUGH)
+		{
+			ball->pass_through = true;
+		}
+		else if (block->type == PowerType::CHAOS)
+		{
+			if (!effects->confuse)
+			{
+				effects->chaos = true;
+			}
+		}
+		else if (block->type == PowerType::CONFUSE)
+		{
+			if (!effects->chaos)
+			{
+				effects->confuse = true;
+			}
+		}
 	}
 }

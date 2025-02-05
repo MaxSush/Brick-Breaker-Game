@@ -11,6 +11,7 @@
 #include "GameObject/Paddle.h"
 #include "Process/Level.h"
 #include <Process/GamePostProcessing.h>
+#include <Process/PowerUps.h>
 
 namespace Breaker
 {
@@ -32,13 +33,10 @@ namespace Breaker
         void Init();
         void Update(float dt);
         void Render();
-        void DoCollision();
-
-        // imgui
-        void DrawImGuiLayer();
 
     private:
         static constexpr float offset = 20.0f;
+        float shakeTime = 0.0f;
         const WinProps* props;
         Rect playzone;
         std::vector<Brick>* bricks = nullptr;
@@ -51,6 +49,10 @@ namespace Breaker
         GameLevel* level = nullptr;
         GameEffects* effects = nullptr;
 
-        float shakeTime = 0.0f;
+        PowerUps powerups;
+
+
+        void FixBallBrickCollision();
+        void ActivatePowerUps(PowerUps::PowerBlock* block);
     };
 }

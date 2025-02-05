@@ -2,6 +2,14 @@
 #include "Rect.h"
 #include "Rect.h"
 
+static float getRandomFloat(float min, float max) 
+{
+	std::uniform_real_distribution<> distr(min, max); // Define range
+	return static_cast<float>(distr(Rect::rng));
+}
+
+std::mt19937 Rect::rng(std::random_device{}());
+
 Rect::Rect(glm::vec2 pos, glm::vec2 size)
 	: pos(pos), size(size)
 {

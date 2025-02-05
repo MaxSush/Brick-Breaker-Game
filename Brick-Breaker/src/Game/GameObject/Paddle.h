@@ -14,6 +14,7 @@ public:
 	void DoBallCollision(Ball* ball);
 	void Draw(SpriteRenderer* render) override;
 	void SetCooldown();
+	Rect& GetRect();
 private:
 	glm::vec2 velocity = { 0,0 };
 	float speed = 550;
