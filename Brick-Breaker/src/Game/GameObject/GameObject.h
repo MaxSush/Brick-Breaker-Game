@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SpriteRenderer.h"
+#include "Manager/SpriteRenderer.h"
 #include "Utility/Rect.h"
 
 #include <GLFW/glfw3.h>

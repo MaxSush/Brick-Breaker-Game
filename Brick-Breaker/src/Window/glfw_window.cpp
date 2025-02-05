@@ -31,8 +31,6 @@ namespace Breaker
 
     void Window::OnUpdate()
     {
-        glfwPollEvents();
-
         glfwGetWindowSize(props.window, &props.width, &props.height);
         glViewport(0, 0, props.width, props.height);
         glfwSwapBuffers(props.window);

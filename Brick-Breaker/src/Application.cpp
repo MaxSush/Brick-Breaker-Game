@@ -19,6 +19,8 @@ namespace Breaker
         game->Init();
         while (wnd->IsShouldClose())
         {
+            glfwPollEvents();
+
             FrameCounter();
             // std::cout << "Frametime : " << dt << "\n";
 
@@ -27,7 +29,6 @@ namespace Breaker
             game->Render();
 
             wnd->OnUpdate();
-
         };
     }
 

@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 
 #include "Utility/Rect.h"
-#include "ResourceManager.h"
-#include "SpriteRenderer.h"
+#include "Manager/ResourceManager.h"
+#include "Manager/SpriteRenderer.h"
 #include "GameObject/Ball.h"
 #include "GameObject/ParticleGenerator.h"
 #include "GameObject/Paddle.h"
@@ -50,7 +50,6 @@ namespace Breaker
         GameEffects* effects = nullptr;
 
         PowerUps powerups;
-
 
         void FixBallBrickCollision();
         void ActivatePowerUps(PowerUps::PowerBlock* block);

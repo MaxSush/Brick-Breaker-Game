@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "GameObject/Brick.h"
-#include "ResourceManager.h"
+#include "Manager/ResourceManager.h"
 
 class GameLevel
 {

@@ -13,9 +13,17 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/Brick-Breaker/external/imgui)
 
+
 add_subdirectory("external/glfw")
 
 include_directories("include" ${IMGUI_DIR} ${IMGUI_DIR}/backends)
+
+set(OPENAL_DIR "${CMAKE_SOURCE_DIR}/Brick-Breaker/external/OpenAL")
+include_directories("${OPENAL_DIR}/include")
+
+set(SNDFILE_DIR "${CMAKE_SOURCE_DIR}/Brick-Breaker/external/libsndfile")
+set(CMAKE_PREFIX_PATH "${SNDFILE_DIR}/cmake")
+find_package(SndFile REQUIRED)
 
 add_subdirectory ("src")
 
@@ -32,3 +40,4 @@ set(IMGUI_SOURCES
 
 # Add ImGui sources to your target
 target_sources(Game PRIVATE ${IMGUI_SOURCES})
+

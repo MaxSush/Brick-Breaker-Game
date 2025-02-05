@@ -24,6 +24,7 @@ namespace Breaker
 
 	void Game::Init()
 	{
+		ResourceManager::Init();
 		ResourceManager::LoadTexture("assets/background.jpg", false, "background");
 		ResourceManager::LoadTexture("assets/ball.png", true, "ball");
 		ResourceManager::LoadTexture("assets/particle.png", true, "particle");
@@ -42,6 +43,14 @@ namespace Breaker
 		ResourceManager::LoadShader("assets/cubeShader.vs", "assets/cubeShader.fg", "sprite");
 		ResourceManager::LoadShader("assets/particle.vs", "assets/particle.fg", "particle");
 		ResourceManager::LoadShader("assets/postProcessing.vs", "assets/postProcessing.fg", "postprocessor");
+
+		ResourceManager::LoadAudio("assets/breakout.mp3", "breakout");
+		ResourceManager::LoadAudio("assets/bleep.mp3", "brick");
+		ResourceManager::LoadAudio("assets/bleep.mp3", "wall");
+		ResourceManager::LoadAudio("assets/bleep.wav", "player");
+		ResourceManager::LoadAudio("assets/powerup.wav", "powerup");
+		ResourceManager::LoadAudio("assets/solid.wav", "solid");
+
 
 		sprite = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 		p_generator = new ParticleGenerator(ResourceManager::GetTexture("particle"), ResourceManager::GetShader("particle"));
@@ -79,10 +88,12 @@ namespace Breaker
 			paddle->DoBallCollision(ball);
 			PowerUps::PowerBlock* block = powerups.CheckCollision(paddle->GetRect());
 			if (block != nullptr) {
+				ResourceManager::PlayAudio("powerup",false);
 				ActivatePowerUps(block);
 			}
 			if (ball->DoWallCollision(playzone))
 			{
+				ResourceManager::PlayAudio("wall",false);
 				paddle->SetCooldown();
 			}
 			p_generator->Update(dt, ball);
@@ -91,6 +102,7 @@ namespace Breaker
 		{
 			p_generator->ClearParticles();
 		}
+		ResourceManager::PlayAudio("breakout", true);
 	}
 
 	void Game::Render()
@@ -151,11 +163,13 @@ namespace Breaker
 			if (!ball->pass_through || !b.IsSolid()) {
 				ball->DoBrickColision(collision);
 				if (!b.IsSolid()) {
+					ResourceManager::PlayAudio("brick", false);
 					b.SetIsDestroyed(true);
 					powerups.SpawnPowerUps(b.GetRect());
 				}
 			}
 			if (!ball->pass_through && b.IsSolid()) {
+				ResourceManager::PlayAudio("solid",false);
 				shakeTime = 0.10f;
 				effects->shake = true;
 			}

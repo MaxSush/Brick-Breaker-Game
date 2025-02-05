@@ -17,37 +17,37 @@ void PowerUps::SpawnPowerUps(Rect& brickBlock)
 	if (ShouldSpawn(20))	// SPEED
 	{
 		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("speed"), PowerType::SPEED, 0.0f));
-		std::cout << "Spawned SPEED Poweerup" << "\n";
+		//std::cout << "Spawned SPEED Poweerup" << "\n";
 		return;
 	}
 	if (ShouldSpawn(30))	// PAD_SIZE_INCREASE
 	{
 		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("increase"), PowerType::PAD_SIZE_INCREASE, 0.0f));
-		std::cout << "Spawned PAD_SIZE_INCREASE Poweerup" << "\n";
+		//std::cout << "Spawned PAD_SIZE_INCREASE Poweerup" << "\n";
 		return;
 	}
 	if (ShouldSpawn(30))	// PASS_THROUGH
 	{
 		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("passthrough"), PowerType::PASS_THROUGH, 10.0f));
-		std::cout << "Spawned PASS_THROUGH Poweerup" << "\n";
+		//std::cout << "Spawned PASS_THROUGH Poweerup" << "\n";
 		return;
 	}
 	if (ShouldSpawn(30)) // STICKY
 	{
 		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("sticky"), PowerType::STICKY, 3.0f));
-		std::cout << "Spawned STICKY Poweerup" << "\n";
+		//std::cout << "Spawned STICKY Poweerup" << "\n";
 		return;
 	}
 	if (ShouldSpawn(20))	// CONFUSE
 	{
 		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("confuse"), PowerType::CONFUSE, 7.0f));
-		std::cout << "Spawned CONFUSE Poweerup" << "\n";
+		//std::cout << "Spawned CONFUSE Poweerup" << "\n";
 		return;
 	}
 	if (ShouldSpawn(30))	// CHAOS
 	{
 		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("chaos"), PowerType::CHAOS, 15.0f));
-		std::cout << "Spawned CHAOS Poweerup" << "\n";
+		//std::cout << "Spawned CHAOS Poweerup" << "\n";
 		return;
 	}
 }
@@ -70,7 +70,7 @@ void PowerUps::UpdatePowerUps(float dt, Rect& playzone, Ball* ball, GameEffects*
 				{
 					if (!IsOtherPowerUpsActivated(PowerType::STICKY))
 					{
-						std::cout << "sticky Deactivated" << block.duration << "\n";
+						//std::cout << "sticky Deactivated" << block.duration << "\n";
 						ball->stuck = false;
 					}
 				}
@@ -79,7 +79,7 @@ void PowerUps::UpdatePowerUps(float dt, Rect& playzone, Ball* ball, GameEffects*
 					if (!IsOtherPowerUpsActivated(PowerType::PASS_THROUGH))
 					{
 						ball->pass_through = false;
-						std::cout << "pass through Deactivated" << block.duration << "\n";
+						//std::cout << "pass through Deactivated" << block.duration << "\n";
 					}
 				}
 				else if (block.type == PowerType::CHAOS)
@@ -87,7 +87,7 @@ void PowerUps::UpdatePowerUps(float dt, Rect& playzone, Ball* ball, GameEffects*
 					if (!IsOtherPowerUpsActivated(PowerType::CHAOS))
 					{
 						effects->chaos = false;
-						std::cout << "Chaos Deactivated" << block.duration << "\n";
+						//std::cout << "Chaos Deactivated" << block.duration << "\n";
 					}
 				}
 				else if (block.type == PowerType::CONFUSE)
@@ -95,7 +95,7 @@ void PowerUps::UpdatePowerUps(float dt, Rect& playzone, Ball* ball, GameEffects*
 					if (!IsOtherPowerUpsActivated(PowerType::CONFUSE))
 					{
 						effects->confuse = false;
-						std::cout << "Confuse Deactivated" << block.duration << "\n";
+						//std::cout << "Confuse Deactivated" << block.duration << "\n";
 					}
 				}
 			}
@@ -103,7 +103,7 @@ void PowerUps::UpdatePowerUps(float dt, Rect& playzone, Ball* ball, GameEffects*
 	}
 	powerups.erase(std::remove_if(powerups.begin(), powerups.end(), [](PowerBlock& block) {
 		if (!block.activated && block.destroyed) {
-			std::cout << "Removing PowerBlock of type: " << static_cast<int>(block.type) << "\n";
+			//std::cout << "Removing PowerBlock of type: " << static_cast<int>(block.type) << "\n";
 			return true;
 		}
 		return false;
@@ -161,7 +161,7 @@ PowerUps::PowerBlock::PowerBlock(glm::vec2 pos, glm::vec2 size, const Texture& t
 void PowerUps::PowerBlock::DestroyPowerBlock()
 {
 	this->destroyed = true;
-	std::cout << "Destroyed" << static_cast<int>(type) << "Poweerup" << "\n";
+	//std::cout << "Destroyed" << static_cast<int>(type) << "Poweerup" << "\n";
 }
 
 bool PowerUps::PowerBlock::CheckCollision(Rect& paddleRect)

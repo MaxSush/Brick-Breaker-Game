@@ -1,7 +1,7 @@
 #include "Paddle.h"
-#include "Paddle.h"
 #include "../Window/KeyListner.h"
 #include <algorithm>
+#include <Manager\ResourceManager.h>
 
 Paddle::Paddle(const Texture& texture, glm::vec2 pos, glm::vec2 size)
 	:
@@ -38,6 +38,7 @@ void Paddle::DoBallCollision(Ball* ball)
 			glm::vec2 new_vel = { percentage,-1.0f };
 			ball->SetVelocity(new_vel);
 			cooldown = true;
+			ResourceManager::PlayAudio("player", false);
 		}
 	}
 }
