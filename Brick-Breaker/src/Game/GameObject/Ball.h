@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include "../Window/KeyListner.h"
-#include "Utility/Rect.h"
+#include "Rect.h"
 #include "Brick.h"
 
 class Ball : GameObject

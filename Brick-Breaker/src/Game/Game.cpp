@@ -102,7 +102,9 @@ namespace Breaker
 		{
 			p_generator->ClearParticles();
 		}
-		ResourceManager::PlayAudio("breakout", true);
+		//ResourceManager::PlayAudio("breakout", true);
+		ResourceManager::PlayAudio("menu_audio", true);
+
 	}
 
 	void Game::Render()

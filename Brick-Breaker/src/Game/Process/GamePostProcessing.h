@@ -1,7 +1,7 @@
 #pragma once
-#include "Utility/SHADER.h"
-#include "Utility/VAO.h"
-#include "Utility/VBO.h"
+#include "SHADER.h"
+#include "VAO.h"
+#include "VBO.h"
 
 class GameEffects
 {

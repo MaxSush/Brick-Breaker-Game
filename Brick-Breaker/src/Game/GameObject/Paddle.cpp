@@ -60,11 +60,11 @@ Rect& Paddle::GetRect()
 
 void Paddle::DoWallCollision(Rect& playzone, Ball* ball)
 {
-	if (KeyListner::isKeyPressed(GLFW_KEY_LEFT))
+	if (KeyListner::IsKeyPressed(GLFW_KEY_LEFT))
 	{
 		velocity = { -1,0 };
 	}
-	else if (KeyListner::isKeyPressed(GLFW_KEY_RIGHT))
+	else if (KeyListner::IsKeyPressed(GLFW_KEY_RIGHT))
 	{
 		velocity = { 1,0 };
 	}

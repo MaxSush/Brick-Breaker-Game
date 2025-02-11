@@ -1,9 +1,9 @@
 #pragma once
-#include "GameObject/GameObject.h"
+#include "../GameObject/GameObject.h"
 #include <vector>
 #include "Manager/ResourceManager.h"
-#include <Process/GamePostProcessing.h>
-#include <GameObject/Ball.h>
+#include "GamePostProcessing.h"
+#include "../GameObject/Ball.h"
 
 enum class PowerType
 {

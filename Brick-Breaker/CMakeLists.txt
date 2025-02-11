@@ -23,6 +23,7 @@ include_directories("${OPENAL_DIR}/include")
 
 set(SNDFILE_DIR "${CMAKE_SOURCE_DIR}/Brick-Breaker/external/libsndfile")
 set(CMAKE_PREFIX_PATH "${SNDFILE_DIR}/cmake")
+include_directories("${SNDFILE_DIR}/include")
 find_package(SndFile REQUIRED)
 
 add_subdirectory ("src")

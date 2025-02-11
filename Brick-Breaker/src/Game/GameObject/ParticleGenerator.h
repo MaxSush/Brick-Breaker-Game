@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "Utility/Texture.h"
-#include "Utility/Shader.h"
+#include "Texture.h"
+#include "Shader.h"
 #include "Ball.h"
 
 struct Particle

@@ -15,16 +15,19 @@ void KeyListner::key_callback(GLFWwindow* window, int key, int scancode, int act
 	else if (action == GLFW_RELEASE)
 	{
 		get().Keys[key] = false;
+		get().keyConsumed[key] = false;
 	}
-
 }
 
-bool KeyListner::isKeyPressed(int keycode) 
+bool KeyListner::IsKeyPressed(int keycode)
 {
 	return get().Keys[keycode];
 }
 
-bool KeyListner::isKeyReleased(int keycode)
-{
-	return get().Keys[keycode];
+bool KeyListner::IsKeyPressedOnce(int keycode) {
+	if (get().Keys[keycode] && !get().keyConsumed[keycode]) {
+		get().keyConsumed[keycode] = true;
+		return true;
+	}
+	return false;
 }

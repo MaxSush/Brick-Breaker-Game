@@ -5,15 +5,23 @@ set(CPP_SOURCES
     Application.cpp  
     Window/glfw_window.cpp
     glad.c
-  "Window/KeyListner.cpp")
+  Window/KeyListner.cpp
+)
 
-add_subdirectory(assets)
+add_subdirectory("assets")
+
+add_subdirectory("Utility")
 
 add_subdirectory("Game")
 
+add_subdirectory("Menu")
+
+
 add_executable(Far-Annoyed ${CPP_SOURCES})
 
-target_link_libraries(Far-Annoyed PRIVATE Game)
+target_include_directories(Far-Annoyed PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_link_libraries(Far-Annoyed PRIVATE Game Menu)
 
 if(WIN32)
     add_custom_command(TARGET Far-Annoyed POST_BUILD

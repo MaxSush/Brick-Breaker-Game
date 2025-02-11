@@ -26,6 +26,9 @@ set(TEXTURE_FILES
     textures/powerup_increase.png
     textures/powerup_speed.png
     textures/powerup_sticky.png
+    textures/menu.jpg
+    textures/menu_exit.png
+    textures/menu_play.png
 )
 
 set(AUDIO_FILES
@@ -34,6 +37,7 @@ set(AUDIO_FILES
     audio/powerup.wav
     audio/solid.wav
     audio/breakout.mp3
+    audio/menu.wav
 )
 
 set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin/assets)

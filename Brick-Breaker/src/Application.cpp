@@ -7,6 +7,7 @@ namespace Breaker
     {
         wnd = Window::CreateWindow();
         game = std::make_unique<Game>(wnd->GetWindowProps());
+        menu = std::make_unique<Menu>();
         last = std::chrono::steady_clock::now();
     }
 
@@ -17,6 +18,7 @@ namespace Breaker
     void Application::Run()
     {
         game->Init();
+        menu->Init();
         while (wnd->IsShouldClose())
         {
             glfwPollEvents();
@@ -24,9 +26,12 @@ namespace Breaker
             FrameCounter();
             // std::cout << "Frametime : " << dt << "\n";
 
-            game->Update(dt);
+            menu->Update(dt);
+
+            //game->Update(dt);
+            menu->Render();
             
-            game->Render();
+            //game->Render();
 
             wnd->OnUpdate();
         };

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Manager/SpriteRenderer.h"
-#include "Utility/Rect.h"
+#include "Rect.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>

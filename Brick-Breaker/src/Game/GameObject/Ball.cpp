@@ -87,7 +87,7 @@ void Ball::DoBrickColision(Collision& collision)
 
 void Ball::SetBall()
 {
-	if (KeyListner::isKeyPressed(GLFW_KEY_SPACE))
+	if (KeyListner::IsKeyPressed(GLFW_KEY_SPACE))
 	{
 		stuck = false;
 	}

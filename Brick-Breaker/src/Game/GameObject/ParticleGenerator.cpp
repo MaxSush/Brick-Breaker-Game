@@ -1,5 +1,4 @@
 #include "ParticleGenerator.h"
-#include "ParticleGenerator.h"
 #include <random>
 
 static float getRandomFloat(float min, float max) {

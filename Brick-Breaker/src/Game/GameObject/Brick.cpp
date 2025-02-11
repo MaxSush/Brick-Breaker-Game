@@ -1,6 +1,4 @@
 #include "Brick.h"
-#include "Brick.h"
-#include "Brick.h"
 
 Brick::Brick(const Texture& texture, glm::vec2 pos, glm::vec2 size)
 	:

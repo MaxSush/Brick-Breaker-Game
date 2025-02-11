@@ -2,8 +2,8 @@
 
 #include "GameObject.h"
 #include "Ball.h"
-#include "Utility/Rect.h"
-#include "Utility/Texture.h"
+#include "Rect.h"
+#include "Texture.h"
 
 class Paddle : GameObject
 {

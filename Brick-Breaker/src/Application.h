@@ -1,6 +1,7 @@
 #pragma once
 #include "Window/glfw_window.h"
 #include "Game/Game.h"
+#include "Menu/Menu.h"
 
 #include <chrono>
 #include <memory>
@@ -19,6 +20,7 @@ namespace Breaker
     private:
         std::unique_ptr<Window> wnd = nullptr;
         std::unique_ptr<Game> game = nullptr;
+        std::unique_ptr<Menu> menu = nullptr;
 
         float dt = 0.0f;
         std::chrono::steady_clock::time_point last;

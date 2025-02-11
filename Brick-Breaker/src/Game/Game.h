@@ -3,15 +3,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "Utility/Rect.h"
+#include "Rect.h"
 #include "Manager/ResourceManager.h"
 #include "Manager/SpriteRenderer.h"
 #include "GameObject/Ball.h"
 #include "GameObject/ParticleGenerator.h"
 #include "GameObject/Paddle.h"
 #include "Process/Level.h"
-#include <Process/GamePostProcessing.h>
-#include <Process/PowerUps.h>
+#include "Process/GamePostProcessing.h"
+#include "Process/PowerUps.h"
 
 namespace Breaker
 {

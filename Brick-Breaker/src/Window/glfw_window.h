@@ -16,7 +16,7 @@ namespace Breaker
         GLFWwindow* window = nullptr;
         const char* name;
         
-        WinProps(int w = 900, int h = 700, const char* name = "Brick-Breaker")
+        WinProps(int w = 1100, int h = 700, const char* name = "Brick-Breaker")
             : width(w), height(h), name(name)
         {
         }
