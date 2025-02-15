@@ -9,7 +9,7 @@ class GameLevel
 {
 public:
 	GameLevel();
-	void LoadLevel(const char* lvl_file, Rect playzone);
+	void LoadLevel(int lvl, Rect playzone);
 	void Draw(SpriteRenderer* render);
 	bool IsCompleted();
 	std::vector<Brick>* GetBricks();

@@ -15,14 +15,6 @@
 
 namespace Breaker
 {
-    enum class GameState
-    {
-        GAME_MENU,
-        GAME_ACTIVE,
-        GAME_WIN,
-        GAME_EXIT
-    };
-
     struct WinProps;
 
     class Game
@@ -33,6 +25,8 @@ namespace Breaker
         void Init();
         void Update(float dt);
         void Render();
+
+        void LoadLevel(int lvl);
 
     private:
         static constexpr float offset = 20.0f;

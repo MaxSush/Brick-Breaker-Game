@@ -18,6 +18,7 @@ public:
 	void SetBall();
 	void ReboundX();
 	void ReboundY();
+	void Reset();
 
 	Rect& GetRect();
 	glm::vec2& GetVelocity();
@@ -31,5 +32,5 @@ public:
 private:
 	glm::vec2 velocity = { 0.0f,-1.0f };
 	float radius;
-	float speed = 700;
+	float speed = 600;
 };

@@ -1,4 +1,5 @@
 #include "Ball.h"
+#include "Ball.h"
 
 Ball::Ball(glm::vec2 pos, float radius, const Texture& texture)
 	:
@@ -51,11 +52,9 @@ bool Ball::DoWallCollision(Rect& playzone)
 			ReboundY();
 			collided = true;
 		}
-		else if ((rect.pos.y + rect.size.y) > playzone.Bottom)
+		else if ((rect.pos.y + rect.size.y) > playzone.Bottom + rect.size.y)
 		{
-			ReboundY();
-			rect.pos.y = playzone.Bottom - rect.size.y;
-			collided = true;
+			Reset();
 		}
 	}
 	return collided;
@@ -101,6 +100,13 @@ void Ball::ReboundX()
 void Ball::ReboundY()
 {
 	velocity.y = -glm::normalize(velocity).y;
+}
+
+void Ball::Reset()
+{
+	stuck = true;
+	speed = 600;
+	velocity = { 0.0f,-1.0f };
 }
 
 Rect& Ball::GetRect()

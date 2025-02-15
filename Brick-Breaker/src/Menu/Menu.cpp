@@ -1,4 +1,6 @@
 #include "Menu.h"
+#include "Menu.h"
+#include "Menu.h"
 #include <iostream>
 #include "../Window/KeyListner.h"
 
@@ -26,23 +28,33 @@ void Menu::Init()
 
 void Menu::Update(float dt)
 {
+	if (itr == 0)
+		scale_play = 1.2f;
+	else if (itr == 1)
+		scale_exit = 1.2f;
+
 	if (scale_play > 1.0f)
-	{
 		scale_play -= dt;
-	}
 	if (scale_exit > 1.0f)
 		scale_exit -= dt;
-	ResourceManager::PlayAudio("menu_audio", false);
+	ButtonUpdate();
+
+	ResourceManager::PlayAudio("menu_audio", true);
 }
 
 void Menu::Render()
 {
 	Rect play_button({ (playzone.size.x / 2.0f) - 130, playzone.size.y - (130 * 2) }, { 270,130 });
 	Rect exit_button({ (playzone.size.x / 2.0f) - 130, playzone.size.y - (160) }, { 270, 130 });
-	ButtonUpdate();
 	sprite->DrawSprite(ResourceManager::GetTexture("menu"), playzone.pos, playzone.size);
 	sprite->DrawSprite(ResourceManager::GetTexture("button_play"), play_button.pos, play_button.size, glm::vec4(1.0f), scale_play);
 	sprite->DrawSprite(ResourceManager::GetTexture("button_exit"), exit_button.pos, exit_button.size, glm::vec4(1.0f), scale_exit);
+}
+
+void Menu::GetGameState(GameState& state)
+{
+	state = gamestate;
+	gamestate = GameState::GAME_MENU;
 }
 
 void Menu::ButtonUpdate()
@@ -62,8 +74,9 @@ void Menu::ButtonUpdate()
 			itr = 0;
 		ResourceManager::PlayAudio("player", false);
 	}
-	if (itr == 0)
-		scale_play = 1.2f;
-	else if (itr == 1)
-		scale_exit = 1.2f;
+
+	if (KeyListner::IsKeyPressedOnce(GLFW_KEY_ENTER))
+	{
+		gamestate = (itr == 0) ? GameState::GAME_LEVEL_MENU : GameState::GAME_EXIT;
+	}
 }

@@ -27,9 +27,10 @@ public:
     static const Shader GetShader(std::string name);
     static const Texture GetTexture(std::string name);
     static const void PlayAudio(std::string name, bool loop);
+    static const void PauseAudio(std::string name);
+    static const void StopAudio(std::string name);
 
     static void Init();
-    static void ListElements();
     static void Clear();
 
 private:

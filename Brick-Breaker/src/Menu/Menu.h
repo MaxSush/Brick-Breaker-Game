@@ -13,6 +13,7 @@ public:
 	void Update(float dt);
 	void Render();
 
+	void GetGameState(GameState& state);
 	void ButtonUpdate();
 private:
 	SpriteRenderer* sprite = nullptr;
@@ -21,4 +22,6 @@ private:
 	float scale_play = 1.0f; 
 	float scale_exit = 1.0f;
 	unsigned int itr = 0;
+
+	GameState gamestate = GameState::GAME_MENU;
 };

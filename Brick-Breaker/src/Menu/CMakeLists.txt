@@ -1,5 +1,7 @@
 add_library(Menu STATIC 
 	Menu.cpp
+    LevelMenu.cpp 
+    "Framebuffer.cpp" 
 )
 
 if(WIN32)

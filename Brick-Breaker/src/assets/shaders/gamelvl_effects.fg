@@ -1,0 +1,45 @@
+#version 460 core
+out vec4 FragColor;
+in vec2 TexCoords;
+
+uniform sampler2D image;
+uniform float blurStrength; // Adjust blur amount
+uniform float brightness;   // Adjust brightness (e.g., 0.8 for 80% brightness)
+
+void main()
+{
+    float offset = 1.0 / 300.0; // Adjust based on resolution
+    vec3 result = vec3(0.0);
+    
+    // Gaussian blur kernel (9-tap)
+    vec2 offsets[9] = vec2[](
+        vec2(-offset,  offset), // Top-left
+        vec2( 0.0f,    offset), // Top-center
+        vec2( offset,  offset), // Top-right
+        vec2(-offset,  0.0f),   // Middle-left
+        vec2( 0.0f,    0.0f),   // Center
+        vec2( offset,  0.0f),   // Middle-right
+        vec2(-offset, -offset), // Bottom-left
+        vec2( 0.0f,   -offset), // Bottom-center
+        vec2( offset, -offset)  // Bottom-right
+    );
+
+    float kernel[9] = float[](
+        1.0, 2.0, 1.0,
+        2.0, 4.0, 2.0,
+        1.0, 2.0, 1.0
+    );
+
+    float sum = 16.0; // Normalize
+
+    for(int i = 0; i < 9; i++)
+    {
+        result += texture(image, TexCoords + offsets[i] * blurStrength).rgb * kernel[i];
+    }
+
+    result /= sum; // Normalize the result
+    result *= brightness; // Reduce brightness
+
+    FragColor = vec4(result, 1.0);
+}
+

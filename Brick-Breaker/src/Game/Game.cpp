@@ -1,5 +1,6 @@
-#include "Game.h"
 #include "../Window/glfw_window.h"
+#include "Game.h"
+#include "Game.h"
 #include <iostream>
 
 namespace Breaker
@@ -7,7 +8,7 @@ namespace Breaker
 	Game::Game(const WinProps* props)
 		:
 		props(props),
-		playzone(Rect(offset,offset,900 - offset,700 - offset))
+		playzone(Rect(offset, offset, 900 - offset, 700 - offset))
 	{
 	}
 
@@ -63,11 +64,20 @@ namespace Breaker
 		glm::vec2 ball_pos = glm::vec2{ paddle_size.x / 2.0f - ball_radius, -ball_radius * 2.0f } + paddle_pos;
 		ball = new Ball(ball_pos, ball_radius, ResourceManager::GetTexture("ball"));
 
-		level = new GameLevel();
-		level->LoadLevel("assets/1level.lvl", playzone);
-		bricks = level->GetBricks();
-		
 		effects = new GameEffects(ResourceManager::GetShader("postprocessor"), props->width, props->height);
+	}
+
+	void Game::LoadLevel(int lvl)
+	{
+		if (level)
+		{
+			bricks->clear();
+			delete level;
+			level = nullptr;
+		}
+		level = new GameLevel();
+		level->LoadLevel(lvl, playzone);
+		bricks = level->GetBricks();
 	}
 
 	void Game::Update(float dt)
@@ -88,12 +98,12 @@ namespace Breaker
 			paddle->DoBallCollision(ball);
 			PowerUps::PowerBlock* block = powerups.CheckCollision(paddle->GetRect());
 			if (block != nullptr) {
-				ResourceManager::PlayAudio("powerup",false);
+				ResourceManager::PlayAudio("powerup", false);
 				ActivatePowerUps(block);
 			}
 			if (ball->DoWallCollision(playzone))
 			{
-				ResourceManager::PlayAudio("wall",false);
+				ResourceManager::PlayAudio("wall", false);
 				paddle->SetCooldown();
 			}
 			p_generator->Update(dt, ball);
@@ -102,18 +112,15 @@ namespace Breaker
 		{
 			p_generator->ClearParticles();
 		}
-		//ResourceManager::PlayAudio("breakout", true);
-		ResourceManager::PlayAudio("menu_audio", true);
-
+		ResourceManager::PlayAudio("breakout", true);
 	}
 
 	void Game::Render()
 	{
-
 		if (state == GameState::GAME_ACTIVE)
 		{
 			effects->BeginRender();
-			sprite->DrawSprite(ResourceManager::GetTexture("background"), playzone.pos, playzone.size);
+			sprite->DrawSprite(ResourceManager::GetTexture("background"), { 0,0 }, { 900,700 });
 			level->Draw(sprite);
 			powerups.DrawPowerUps(sprite);
 			paddle->Draw(sprite);
@@ -146,10 +153,10 @@ namespace Breaker
 			Rect b_rect = b.GetRect();
 			Collision col = b_rect.CheckCollision(ball->GetRect(), ball->GetRadius());
 
-			if (std::get<0>(col)) 
+			if (std::get<0>(col))
 			{ // Collision occurred
 				float newColDist = glm::length(ball->GetRect().GetCenter() - b_rect.GetCenter());
-				if (newColDist < curColDist) 
+				if (newColDist < curColDist)
 				{
 					curColDist = newColDist;
 					curColIndex = i;
@@ -171,7 +178,7 @@ namespace Breaker
 				}
 			}
 			if (!ball->pass_through && b.IsSolid()) {
-				ResourceManager::PlayAudio("solid",false);
+				ResourceManager::PlayAudio("solid", false);
 				shakeTime = 0.10f;
 				effects->shake = true;
 			}

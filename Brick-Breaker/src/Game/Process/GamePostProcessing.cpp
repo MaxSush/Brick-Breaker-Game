@@ -116,14 +116,13 @@ void GameEffects::Init()
 void GameEffects::InitRenderData()
 {
 	float vertices[] = {
-		// pos        // tex
-		-1.0f, -1.0f, 0.0f, 0.0f,
-		 1.0f,  1.0f, 1.0f, 1.0f,
-		-1.0f,  1.0f, 0.0f, 1.0f,
-
-		-1.0f, -1.0f, 0.0f, 0.0f,
-		 1.0f, -1.0f, 1.0f, 0.0f,
-		 1.0f,  1.0f, 1.0f, 1.0f
+		// positions // texCoords
+		-1.0f,  1.0f,	 0.0f, 1.0f,
+		-1.0f, -1.0f,	 0.0f, 0.0f,
+		 1.0f, -1.0f,	 1.0f, 0.0f,
+		-1.0f,  1.0f,	 0.0f, 1.0f,
+		 1.0f, -1.0f,	 1.0f, 0.0f,
+		 1.0f,  1.0f,	 1.0f, 1.0f
 	};
 	vao.Bind();
 	VBO vbo(vertices, sizeof(vertices));

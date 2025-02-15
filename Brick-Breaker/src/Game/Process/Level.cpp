@@ -4,8 +4,9 @@ GameLevel::GameLevel()
 {
 }
 
-void GameLevel::LoadLevel(const char* lvl_file, Rect playzone)
+void GameLevel::LoadLevel(int lvl, Rect playzone)
 {
+	std::string lvl_file = "assets/" + std::to_string(lvl) + "level.lvl";
 	bricks.clear();
 	unsigned int tilecode;
 	GameLevel level;
@@ -57,14 +58,30 @@ std::vector<Brick>* GameLevel::GetBricks()
 	return &bricks;
 }
 
+static float GetScale(float val)
+{
+	const float minVal = 5.0f, maxVal = 13.0f;
+	const float minScale = 2.0f, maxScale = 4.0f;
+
+	if (val > maxVal) 
+		return minScale;  
+	if (val < minVal) 
+		return maxScale;  
+
+	// Linear interpolation formula
+	return minScale + ((maxVal - val) / (maxVal - minVal)) * (maxScale - minScale);
+}
+
+
 void GameLevel::Init(std::vector<std::vector<unsigned int>> tiledata, Rect playzone)
 {
 	float offset = 10.0f;
 	const size_t height = tiledata.size();
 	const size_t width = tiledata[0].size();
 
-	const float unit_width	=	(playzone.Right - playzone.pos.y - (offset * 2)) / static_cast<float>(width);
-	const float unit_height =	((playzone.Bottom / 3.0f) - playzone.pos.y) / static_cast<float>(height);
+
+	const float unit_width	=	(playzone.Right - playzone.pos.x - (offset * 2)) / static_cast<float>(width);
+	const float unit_height =	unit_width / 2.2f;
 
 	/*
 	*  0 ==> none

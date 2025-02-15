@@ -1,4 +1,7 @@
 #include "ResourceManager.h"
+#include "ResourceManager.h"
+#include "ResourceManager.h"
+#include "ResourceManager.h"
 #include "sndfile.h"
 
 
@@ -73,6 +76,30 @@ const void ResourceManager::PlayAudio(std::string name, bool loop)
     }
 }
 
+const void ResourceManager::PauseAudio(std::string name)
+{
+    AudioInfo& audio = Audios[name];
+    ALint state;
+    alGetSourcei(audio.source, AL_SOURCE_STATE, &state);
+
+    if (state == AL_PLAYING)
+    {
+        alSourcePause(audio.source);
+    }
+}
+
+const void ResourceManager::StopAudio(std::string name)
+{
+    AudioInfo& audio = Audios[name];
+    ALint state;
+    alGetSourcei(audio.source, AL_SOURCE_STATE, &state);
+
+    if (state == AL_PLAYING)
+    {
+        alSourceStop(audio.source);  // Stop the audio if it's playing
+    }
+}
+
 void ResourceManager::Init()
 {
 	device = alcOpenDevice(nullptr);
@@ -88,15 +115,6 @@ void ResourceManager::Init()
 		return;
 	}
 	alcMakeContextCurrent(context);
-}
-
-void ResourceManager::ListElements()
-{
-    std::cout << "Texture: \n";
-    for (auto& e : Textures)
-    {
-        std::cout << e.first << "\n";
-    }
 }
 
 void ResourceManager::Clear()
@@ -150,10 +168,6 @@ AudioInfo ResourceManager::LoadAudioFromFile(const char* filename)
         std::cerr << "Error to read all frames from the audio file." << std::endl;
     }
     sf_close(file);
-
-    std::cout << filename <<": Sample rate: " << sfInfo.samplerate << "\n";
-    std::cout << filename << ": Channels: " << sfInfo.channels << "\n";
-    std::cout << filename << ": Format: " << sfInfo.format << "\n";
 
     ALenum format = (sfInfo.channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
     AudioInfo audio_info {};

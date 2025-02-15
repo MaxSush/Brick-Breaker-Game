@@ -4,6 +4,15 @@
 #include <tuple>
 #include <random>
 
+enum class GameState
+{
+	GAME_MENU,
+	GAME_LEVEL_MENU,
+	GAME_ACTIVE,
+	GAME_WIN,
+	GAME_EXIT
+};
+
 enum Direction
 {
 	UP,
