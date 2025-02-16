@@ -29,7 +29,7 @@ void Ball::Update(float dt)
 	}
 }
 
-bool Ball::DoWallCollision(Rect& playzone)
+bool Ball::DoWallCollision(Rect& playzone, int& lives)
 {
 	bool collided = false;
 	if (!stuck)
@@ -54,6 +54,7 @@ bool Ball::DoWallCollision(Rect& playzone)
 		}
 		else if ((rect.pos.y + rect.size.y) > playzone.Bottom + rect.size.y)
 		{
+			lives--;
 			Reset();
 		}
 	}

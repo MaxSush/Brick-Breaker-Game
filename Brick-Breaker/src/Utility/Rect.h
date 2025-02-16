@@ -9,6 +9,8 @@ enum class GameState
 	GAME_MENU,
 	GAME_LEVEL_MENU,
 	GAME_ACTIVE,
+	GAME_PAUSE,
+	GAME_LOSE,
 	GAME_WIN,
 	GAME_EXIT
 };

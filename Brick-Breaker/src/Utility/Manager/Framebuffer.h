@@ -4,15 +4,14 @@
 #include "VBO.h"
 #include "EBO.h"
 #include "Manager/ResourceManager.h"
+#include "Rect.h"
 
 class FrameBuffer 
 {
 public:
-	FrameBuffer(const Shader& shader, int width, int height);
+	FrameBuffer(const Shader& shader, Rect rect);
 	~FrameBuffer();
 	void BeginRender() const;
-	void DoBloom();
-	void DoBlur();
 	void EndRender() const;
 	void Render();
 private:
@@ -20,7 +19,7 @@ private:
 	Shader shader;
 	unsigned int fbo;
 	unsigned int textureFbo;
-	int width, height;
+	Rect rect;
 
 	void Init();
 	void InitRenderData();

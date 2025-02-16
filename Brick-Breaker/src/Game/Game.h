@@ -12,6 +12,7 @@
 #include "Process/Level.h"
 #include "Process/GamePostProcessing.h"
 #include "Process/PowerUps.h"
+#include "Process/MenuWindow.h"
 
 namespace Breaker
 {
@@ -27,10 +28,12 @@ namespace Breaker
         void Render();
 
         void LoadLevel(int lvl);
+        void GetState(GameState& state);
 
     private:
         static constexpr float offset = 20.0f;
         float shakeTime = 0.0f;
+        int lives = 3;
         const WinProps* props;
         Rect playzone;
         std::vector<Brick>* bricks = nullptr;
@@ -42,6 +45,8 @@ namespace Breaker
         Paddle* paddle = nullptr;
         GameLevel* level = nullptr;
         GameEffects* effects = nullptr;
+        MenuWindow* menu_window = nullptr;
+        FrameBuffer* window_effect = nullptr;
 
         PowerUps powerups;
 

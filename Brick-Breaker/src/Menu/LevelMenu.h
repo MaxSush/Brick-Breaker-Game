@@ -5,7 +5,7 @@
 #include "EBO.h"
 #include "TEXTURE.h"
 #include "Manager/SpriteRenderer.h"
-#include "Framebuffer.h"
+#include "Manager/Framebuffer.h"
 
 struct Block {
 	glm::vec2 pos, size;

@@ -13,7 +13,7 @@ public:
 	~Ball() { }
 	void Draw(SpriteRenderer* render) override;
 	void Update(float dt);
-	bool DoWallCollision(Rect& playzone);
+	bool DoWallCollision(Rect& playzone, int& lives);
 	void DoBrickColision(Collision& collision);
 	void SetBall();
 	void ReboundX();

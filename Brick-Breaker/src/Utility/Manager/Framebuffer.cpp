@@ -1,11 +1,9 @@
 #include "Framebuffer.h"
 
-
-FrameBuffer::FrameBuffer(const Shader& shader, int width, int height)
+FrameBuffer::FrameBuffer(const Shader& shader, Rect rect)
 	:
 	shader(shader),
-	width(width),
-	height(height)
+	rect(rect)
 {
 	Init();
 }
@@ -27,25 +25,18 @@ void FrameBuffer::BeginRender() const
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void FrameBuffer::DoBloom()
-{
-}
-
-void FrameBuffer::DoBlur()
-{
-}
-
 void FrameBuffer::EndRender() const
 {
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // Default framebuffer
-	glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	//glBlitFramebuffer(rect.Left, rect.Top, rect.Right, rect.Bottom, rect.Left, rect.Top, rect.Right, rect.Bottom, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
 
 void FrameBuffer::Render()
 {
+	glClear(GL_COLOR_BUFFER_BIT);	
 	shader.Activate();
 
 	shader.setFloat("blurStrength", 1.5f);
@@ -77,7 +68,7 @@ void FrameBuffer::Init()
 {
 	glGenFramebuffers(1, &fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	textureFbo = GenTexture(width, height);
+	textureFbo = GenTexture(rect.Right, rect.Bottom);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureFbo, 0);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR::POSTPROCESSOR: Failed to initialize FBO" << std::endl;

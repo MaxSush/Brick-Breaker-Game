@@ -8,7 +8,7 @@ add_library(Utility STATIC
     EBO.cpp
     Manager/SpriteRenderer.cpp
     Manager/ResourceManager.cpp
-)
+ "Manager/Framebuffer.cpp" "Manager/Framebuffer.h")
 
 target_include_directories(Utility PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

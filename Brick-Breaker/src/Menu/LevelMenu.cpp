@@ -47,7 +47,6 @@ void LevelMenu::LevelRender()
 	effects->BeginRender();
 	sprite->DrawSprite(ResourceManager::GetTexture("lvl_menu"), playzone.pos, playzone.size, glm::vec4(1.0f));
 	effects->EndRender();
-	effects->DoBlur();
 	effects->Render();
 	for (int i = 0; i < total_blocks; i++)
 	{
@@ -86,14 +85,13 @@ void LevelMenu::Init()
 	for (int i = 1; i <= total_blocks; i++)
 	{
 		std::string name = "assets/" + std::to_string(i) + "level.png";
-		std::cout << name << "\n";
 		ResourceManager::LoadTexture(name.c_str(), true, std::to_string(i) + "level");
 	}
 
 	ResourceManager::LoadShader("assets/gamelvl_effects.vs", "assets/gamelvl_effects.fg", "level_effects");
 
 	sprite = new SpriteRenderer(ResourceManager::GetShader("sprite"));
-	effects = new FrameBuffer(ResourceManager::GetShader("level_effects"), 900, 700);
+	effects = new FrameBuffer(ResourceManager::GetShader("level_effects"), Rect(0, 0, 900, 700));
 
 	float offset = 150.0f;
 	glm::vec2 size = { 300, 200 };
