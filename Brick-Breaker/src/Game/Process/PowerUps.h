@@ -42,6 +42,7 @@ public:
 	PowerBlock* CheckCollision(Rect& paddleRect);
 	void DrawPowerUps(SpriteRenderer* render);
 	bool IsOtherPowerUpsActivated(PowerType type);
+	void Reset();
 private:
 	std::vector<PowerBlock> powerups;
 };

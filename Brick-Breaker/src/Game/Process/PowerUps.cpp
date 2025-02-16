@@ -1,4 +1,5 @@
 #include "PowerUps.h"
+#include "PowerUps.h"
 #include <random>
 
 
@@ -148,6 +149,11 @@ bool PowerUps::IsOtherPowerUpsActivated(PowerType type)
 		}
 	}
 	return false;
+}
+
+void PowerUps::Reset()
+{
+	powerups.clear();
 }
 
 PowerUps::PowerBlock::PowerBlock(glm::vec2 pos, glm::vec2 size, const Texture& texture, PowerType type, float duration)

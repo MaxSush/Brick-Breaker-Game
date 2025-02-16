@@ -8,6 +8,7 @@ LevelMenu::LevelMenu()
 	:
 	playzone(Rect(0, 0, 900, 700))
 {
+	ResourceManager::LoadShader("assets/gamelvl_effects.vs", "assets/gamelvl_effects.fg", "level_effects");
 	scaleFactors.resize(total_blocks, 1.0f);
 }
 
@@ -88,7 +89,6 @@ void LevelMenu::Init()
 		ResourceManager::LoadTexture(name.c_str(), true, std::to_string(i) + "level");
 	}
 
-	ResourceManager::LoadShader("assets/gamelvl_effects.vs", "assets/gamelvl_effects.fg", "level_effects");
 
 	sprite = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 	effects = new FrameBuffer(ResourceManager::GetShader("level_effects"), Rect(0, 0, 900, 700));

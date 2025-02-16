@@ -1,15 +1,16 @@
 #include "Level.h"
 
-GameLevel::GameLevel()
+GameLevel::GameLevel(int level)
+	:
+	cur_level(level)
 {
 }
 
-void GameLevel::LoadLevel(int lvl, Rect playzone)
+void GameLevel::LoadLevel(Rect playzone)
 {
-	std::string lvl_file = "assets/" + std::to_string(lvl) + "level.lvl";
+	std::string lvl_file = "assets/" + std::to_string(cur_level) + "level.lvl";
 	bricks.clear();
 	unsigned int tilecode;
-	GameLevel level;
 	std::string line;
 	std::ifstream fstream(lvl_file);
 	std::vector<std::vector<unsigned int>> tiledata;

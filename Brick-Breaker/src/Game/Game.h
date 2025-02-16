@@ -27,6 +27,7 @@ namespace Breaker
         void Update(float dt);
         void Render();
 
+        void ProcessInput(float dt);
         void LoadLevel(int lvl);
         void GetState(GameState& state);
 
@@ -38,7 +39,8 @@ namespace Breaker
         Rect playzone;
         std::vector<Brick>* bricks = nullptr;
 
-        GameState state = GameState::GAME_ACTIVE;
+        GameState gamestate = GameState::GAME_ACTIVE;
+        GameWindow window = GameWindow::GAME_PLAY;
         SpriteRenderer* sprite = nullptr;
         Ball* ball = nullptr;
         ParticleGenerator* p_generator = nullptr;
@@ -46,7 +48,6 @@ namespace Breaker
         GameLevel* level = nullptr;
         GameEffects* effects = nullptr;
         MenuWindow* menu_window = nullptr;
-        FrameBuffer* window_effect = nullptr;
 
         PowerUps powerups;
 

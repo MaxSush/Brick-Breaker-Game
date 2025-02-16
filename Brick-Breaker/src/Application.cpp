@@ -45,25 +45,17 @@ namespace Breaker
                 levelLoaded = false;
                 break;
             case GameState::GAME_ACTIVE:
-                std::cout << lvl << "\n";
                 if (!levelLoaded) {
                     game->LoadLevel(lvl);
                     levelLoaded = true;
                 }
                 game->Update(dt);
                 game->Render();
-                break;
-            case GameState::GAME_WIN:
+                game->GetState(gamestate);
                 break;
             case GameState::GAME_EXIT:
                 wnd->OnUpdate();
                 return;
-            }
-            // Replace for game over logic 
-            if (KeyListner::IsKeyPressedOnce(GLFW_KEY_BACKSPACE))
-            {
-                gamestate = GameState::GAME_LEVEL_MENU;
-                ResourceManager::StopAudio("breakout");
             }
             wnd->OnUpdate();
         }

@@ -1,11 +1,14 @@
 #include "Paddle.h"
+#include "Paddle.h"
 #include "../Window/KeyListner.h"
 #include <algorithm>
 #include <Manager\ResourceManager.h>
 
 Paddle::Paddle(const Texture& texture, glm::vec2 pos, glm::vec2 size)
 	:
-	GameObject(pos,size,texture)
+	GameObject(pos,size,texture),
+	start_pos(pos),
+	start_size(size)
 {
 }
 
@@ -51,6 +54,14 @@ void Paddle::Draw(SpriteRenderer* render)
 void Paddle::SetCooldown()
 {
 	cooldown = false;
+}
+
+void Paddle::Reset()
+{
+	velocity = { 0,0 };
+	float speed = 550;
+	bool cooldown = false;
+	rect = Rect(start_pos, start_size);
 }
 
 Rect& Paddle::GetRect()

@@ -9,10 +9,16 @@ enum class GameState
 	GAME_MENU,
 	GAME_LEVEL_MENU,
 	GAME_ACTIVE,
+	GAME_EXIT
+};
+
+enum class GameWindow {
+	GAME_PLAY,
 	GAME_PAUSE,
+	GAME_RESTART,
 	GAME_LOSE,
 	GAME_WIN,
-	GAME_EXIT
+	GAME_MENU
 };
 
 enum Direction

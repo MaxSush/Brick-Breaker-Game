@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 #include "ResourceManager.h"
 #include "ResourceManager.h"
+#include "ResourceManager.h"
 #include "sndfile.h"
 
 
@@ -38,6 +39,8 @@ const Texture ResourceManager::GetTexture(std::string name)
 	return Textures[name];
 }
 
+static float volume = 0.0f;
+
 const void ResourceManager::PlayAudio(std::string name, bool loop)
 {
     AudioInfo& audio = Audios[name];
@@ -46,11 +49,18 @@ const void ResourceManager::PlayAudio(std::string name, bool loop)
     ALint state;
     alGetSourcei(audio.source, AL_SOURCE_STATE, &state);
     
+    if (name == "win_bgm")
+    {
+        if (volume < 1.0f)
+            volume += 0.1;
+        alSourcef(audio.buffer, AL_GAIN, volume);
+    }
+
     if (state != AL_PLAYING)
     {
         alSourcePlay(audio.source);
     }
-    else if (state == AL_PLAYING && !(name == "breakout" || name == "menu_audio"))
+    else if (state == AL_PLAYING && !(audio.duration > 2))
     {
         ALuint source;
         alGenSources(1, &source);
@@ -93,6 +103,8 @@ const void ResourceManager::StopAudio(std::string name)
     AudioInfo& audio = Audios[name];
     ALint state;
     alGetSourcei(audio.source, AL_SOURCE_STATE, &state);
+    
+    volume = 0.0f;
 
     if (state == AL_PLAYING)
     {
@@ -179,5 +191,15 @@ AudioInfo ResourceManager::LoadAudioFromFile(const char* filename)
     alSourcei(audio_info.source, AL_BUFFER, audio_info.buffer);
     alSourcef(audio_info.source, AL_GAIN, 1.0f);
     alSourcef(audio_info.source, AL_PITCH, 1.0f);
-	return audio_info;
+
+    ALint size, frequency, channels, bits;
+    alGetBufferi(audio_info.buffer, AL_SIZE, &size);
+    alGetBufferi(audio_info.buffer, AL_FREQUENCY, &frequency);
+    alGetBufferi(audio_info.buffer, AL_CHANNELS, &channels);
+    alGetBufferi(audio_info.buffer, AL_BITS, &bits);
+
+    float duration = static_cast<float>(size) / (frequency * channels * (bits / 8.0f));
+    audio_info.duration = duration;
+
+    return audio_info;
 }

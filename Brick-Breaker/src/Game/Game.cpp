@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Game.h"
 #include "../Window/glfw_window.h"
 #include "Game.h"
 #include "Game.h"
@@ -16,7 +17,6 @@ namespace Breaker
 	Game::~Game()
 	{
 		ResourceManager::Clear();
-		delete window_effect;
 		delete menu_window;
 		delete effects;
 		delete level;
@@ -55,7 +55,9 @@ namespace Breaker
 		ResourceManager::LoadAudio("assets/bleep.wav", "player");
 		ResourceManager::LoadAudio("assets/powerup.wav", "powerup");
 		ResourceManager::LoadAudio("assets/solid.wav", "solid");
-
+		ResourceManager::LoadAudio("assets/win_sound.wav", "win_sound");
+		ResourceManager::LoadAudio("assets/win_bgm.wav", "win_bgm");
+		ResourceManager::LoadAudio("assets/lose_sound.wav", "lose_sound");
 
 		sprite = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 		p_generator = new ParticleGenerator(ResourceManager::GetTexture("particle"), ResourceManager::GetShader("particle"));
@@ -70,7 +72,18 @@ namespace Breaker
 
 		effects = new GameEffects(ResourceManager::GetShader("postprocessor"), props->width, props->height);
 		menu_window = new MenuWindow();
-		window_effect = new FrameBuffer(Shader("assets/gamelvl_effects.vs", "assets/gamelvl_effects.fg"), Rect(0, 0, 900, 700));
+	}
+
+	void Game::ProcessInput(float dt)
+	{
+		if (KeyListner::IsKeyPressedOnce(GLFW_KEY_ESCAPE) || KeyListner::IsKeyPressedOnce(GLFW_KEY_BACKSPACE))
+		{
+			window = GameWindow::GAME_PAUSE;
+		}
+		if (KeyListner::IsKeyPressedOnce(GLFW_KEY_W))
+		{
+			window = GameWindow::GAME_WIN;
+		}
 	}
 
 	void Game::LoadLevel(int lvl)
@@ -81,82 +94,152 @@ namespace Breaker
 			delete level;
 			level = nullptr;
 		}
-		level = new GameLevel();
-		level->LoadLevel(lvl, playzone);
+		level = new GameLevel(lvl);
+		level->LoadLevel(playzone);
 		bricks = level->GetBricks();
 	}
 
 	void Game::GetState(GameState& state)
 	{
-		
+		state = gamestate;
+		gamestate = GameState::GAME_ACTIVE;
 	}
 
 	void Game::Update(float dt)
 	{
-		paddle->Update(dt, playzone, ball);
-		ball->SetBall();
-		powerups.UpdatePowerUps(dt, playzone, ball, effects);
-		if (shakeTime > 0.0f) {
-			shakeTime -= dt;
-			if (shakeTime <= 0.0f) {
-				effects->shake = false;
-			}
-		}
-		if (!ball->IsStuck())
-		{
-			FixBallBrickCollision();
-			ball->Update(dt);
-			paddle->DoBallCollision(ball);
-			PowerUps::PowerBlock* block = powerups.CheckCollision(paddle->GetRect());
-			if (block != nullptr) {
-				ResourceManager::PlayAudio("powerup", false);
-				ActivatePowerUps(block);
-			}
-			if (ball->DoWallCollision(playzone,lives))
-			{
-				ResourceManager::PlayAudio("wall", false);
-				paddle->SetCooldown();
-			}
-			p_generator->Update(dt, ball);
-		}
-		else
-		{
-			p_generator->ClearParticles();
-		}
-		if (lives <= 0)
-		{
-			state = GameState::GAME_LOSE;
-		}
 		ResourceManager::PlayAudio("breakout", true);
+
+		switch (window)
+		{
+		case GameWindow::GAME_PLAY:
+			{
+				paddle->Update(dt, playzone, ball);
+				ball->SetBall();
+				powerups.UpdatePowerUps(dt, playzone, ball, effects);
+				if (shakeTime > 0.0f) {
+					shakeTime -= dt;
+					if (shakeTime <= 0.0f) {
+						effects->shake = false;
+					}
+				}
+				if (!ball->IsStuck())
+				{
+					FixBallBrickCollision();
+					ball->Update(dt);
+					paddle->DoBallCollision(ball);
+					PowerUps::PowerBlock* block = powerups.CheckCollision(paddle->GetRect());
+					if (block != nullptr) {
+						ResourceManager::PlayAudio("powerup", false);
+						ActivatePowerUps(block);
+					}
+					if (ball->DoWallCollision(playzone, lives))
+					{
+						ResourceManager::PlayAudio("wall", false);
+						paddle->SetCooldown();
+					}
+					p_generator->Update(dt, ball);
+				}
+				else
+				{
+					p_generator->ClearParticles();
+				}
+				if (level->IsCompleted())
+				{
+					ResourceManager::PlayAudio("win_sound", false);
+					window = GameWindow::GAME_WIN;
+				}
+				if (lives <= 0)
+				{
+					ResourceManager::PlayAudio("lose_sound", false);
+					window = GameWindow::GAME_LOSE;
+				}
+				ProcessInput(dt);
+			}
+			break;
+
+		case GameWindow::GAME_PAUSE:
+			menu_window->UpdatePauseMenu(dt, window);
+			break;
+
+		case GameWindow::GAME_RESTART:
+			bricks->clear();
+			level->LoadLevel(playzone);
+			bricks = level->GetBricks();
+			ball->Reset();
+			paddle->Reset();
+			powerups.Reset();
+			lives = 3;
+			window = GameWindow::GAME_PLAY;
+			ResourceManager::StopAudio("win_bgm");
+			break;
+
+		case GameWindow::GAME_LOSE:
+			menu_window->UpdateLoseMenu(dt, window);
+			ResourceManager::StopAudio("breakout");
+			ResourceManager::PlayAudio("win_bgm", true);
+			break;
+
+		case GameWindow::GAME_MENU:
+			lives = 3;
+			gamestate = GameState::GAME_LEVEL_MENU;
+			window = GameWindow::GAME_PLAY;
+			ResourceManager::StopAudio("breakout");
+			ResourceManager::StopAudio("win_bgm");
+			break;
+
+		case GameWindow::GAME_WIN:
+			ResourceManager::PlayAudio("win_sound", false);
+			menu_window->UpdateWinMenu(dt, window);
+			ResourceManager::StopAudio("breakout");
+			ResourceManager::PlayAudio("win_bgm", true);
+			break;
+
+		default:
+			break;
+		}
+
 	}
 
 	void Game::Render()
 	{
-		effects->BeginRender();
-		sprite->DrawSprite(ResourceManager::GetTexture("background"), { 0,0 }, { 900,700 });
-		level->Draw(sprite);
-		powerups.DrawPowerUps(sprite);
-		paddle->Draw(sprite);
-		ball->Draw(sprite);
+		switch (window)
+		{
+		case GameWindow::GAME_PLAY:
+			effects->BeginRender();
+			sprite->DrawSprite(ResourceManager::GetTexture("background"), { 0,0 }, { 900,700 });
+			level->Draw(sprite);
+			powerups.DrawPowerUps(sprite);
+			paddle->Draw(sprite);
+			ball->Draw(sprite);
 
-		if (!ball->IsStuck())
-		{
-			p_generator->Draw();
-		}
-		effects->EndRender();
-		effects->Render(float(glfwGetTime()));
-		sprite->DrawSprite(ResourceManager::GetTexture("bevel"), { 0,0 }, { props->width, props->height }, { 0.0f, 0.8f, 0.8f, 1.0f });
-		for (int i = 1; i <= lives; i++)
-		{
-			sprite->DrawSprite(ResourceManager::GetTexture("lives"), { props->width - offset - (i * 30), 2 }, { 25,25 });
-		}
-		if (state == GameState::GAME_LOSE)
-		{
-			window_effect->BeginRender();
+			if (!ball->IsStuck())
+			{
+				p_generator->Draw();
+			}
+			effects->EndRender();
 			effects->Render(float(glfwGetTime()));
-			window_effect->EndRender();
-			window_effect->Render();
+			sprite->DrawSprite(ResourceManager::GetTexture("bevel"), { 0,0 }, { props->width, props->height }, { 0.0f, 0.8f, 0.8f, 1.0f });
+			for (int i = 1; i <= lives; i++)
+			{
+				sprite->DrawSprite(ResourceManager::GetTexture("lives"), { props->width - offset - (i * 30), 2 }, { 25,25 });
+			}
+			break;
+		case GameWindow::GAME_PAUSE:
+			menu_window->InitWindow_Effect(effects);
 			menu_window->DrawPauseWindow(sprite);
+			break;
+		case GameWindow::GAME_RESTART:
+			break;
+		case GameWindow::GAME_LOSE:
+			menu_window->InitWindow_Effect(effects);
+			menu_window->DrawGameLoseWindow(sprite);
+			break;
+		case GameWindow::GAME_WIN:
+			menu_window->InitWindow_Effect(effects);
+			menu_window->DrawGameWinWindow(sprite);
+			break;
+		default:
+			break;
 		}
 	}
 

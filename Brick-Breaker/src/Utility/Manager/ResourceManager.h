@@ -11,6 +11,7 @@
 struct AudioInfo {
     ALuint buffer;
     ALuint source;
+    float duration;
     void Delete() {
         alDeleteSources(1, &source);
         alDeleteBuffers(1, &buffer);
