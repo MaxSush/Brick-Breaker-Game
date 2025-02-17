@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "KeyListner.h"
+#include "MouseListner.h"
 
 namespace Breaker
 {
@@ -36,7 +37,8 @@ namespace Breaker
 
     private:
         WinProps props;
-        void Init();
+        MouseListner& mouse;
 
+        void Init();
     };
 }

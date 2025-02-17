@@ -1,8 +1,5 @@
 #include "Game.h"
-#include "Game.h"
 #include "../Window/glfw_window.h"
-#include "Game.h"
-#include "Game.h"
 #include <iostream>
 
 namespace Breaker
@@ -10,7 +7,7 @@ namespace Breaker
 	Game::Game(const WinProps* props)
 		:
 		props(props),
-		playzone(Rect(offset, offset * 2, 900 - offset, 700 - offset))
+		playzone(Rect(offset , offset * 2, 900 - offset, 700 - offset))
 	{
 	}
 
@@ -62,7 +59,7 @@ namespace Breaker
 		sprite = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 		p_generator = new ParticleGenerator(ResourceManager::GetTexture("particle"), ResourceManager::GetShader("particle"));
 
-		glm::vec2 paddle_size = { 135.0f,20.0f };
+		glm::vec2 paddle_size = { 160.0f,20.0f };
 		glm::vec2 paddle_pos = { (playzone.Right / 2.0f) - (paddle_size.x / 2.0f),playzone.Bottom - (paddle_size.y * 2.0f) };
 		paddle = new Paddle(ResourceManager::GetTexture("paddle"), paddle_pos, paddle_size);
 
@@ -168,7 +165,7 @@ namespace Breaker
 			ball->Reset();
 			paddle->Reset();
 			powerups.Reset();
-			lives = 3;
+			lives = 5;
 			window = GameWindow::GAME_PLAY;
 			ResourceManager::StopAudio("win_bgm");
 			break;
@@ -180,7 +177,7 @@ namespace Breaker
 			break;
 
 		case GameWindow::GAME_MENU:
-			lives = 3;
+			lives = 5;
 			gamestate = GameState::GAME_LEVEL_MENU;
 			window = GameWindow::GAME_PLAY;
 			ResourceManager::StopAudio("breakout");
@@ -188,7 +185,6 @@ namespace Breaker
 			break;
 
 		case GameWindow::GAME_WIN:
-			ResourceManager::PlayAudio("win_sound", false);
 			menu_window->UpdateWinMenu(dt, window);
 			ResourceManager::StopAudio("breakout");
 			ResourceManager::PlayAudio("win_bgm", true);
@@ -221,7 +217,7 @@ namespace Breaker
 			sprite->DrawSprite(ResourceManager::GetTexture("bevel"), { 0,0 }, { props->width, props->height }, { 0.0f, 0.8f, 0.8f, 1.0f });
 			for (int i = 1; i <= lives; i++)
 			{
-				sprite->DrawSprite(ResourceManager::GetTexture("lives"), { props->width - offset - (i * 30), 2 }, { 25,25 });
+				sprite->DrawSprite(ResourceManager::GetTexture("lives"), { props->width - 350 - (i * 30), 2 }, { 25,25 });
 			}
 			break;
 		case GameWindow::GAME_PAUSE:

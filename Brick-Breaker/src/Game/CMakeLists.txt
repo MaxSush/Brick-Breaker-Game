@@ -10,7 +10,7 @@ add_library(Game STATIC
     Process/Level.cpp
     Process/GamePostProcessing.cpp 
     Process/PowerUps.cpp
-  "Process/MenuWindow.h" "Process/MenuWindow.cpp")
+    Process/MenuWindow.cpp)
 
 if(WIN32)
     target_link_directories(Game PUBLIC "${OPENAL_DIR}/lib")

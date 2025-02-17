@@ -1,5 +1,4 @@
 #include "Paddle.h"
-#include "Paddle.h"
 #include "../Window/KeyListner.h"
 #include <algorithm>
 #include <Manager\ResourceManager.h>

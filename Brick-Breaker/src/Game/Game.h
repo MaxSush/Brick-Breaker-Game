@@ -32,9 +32,9 @@ namespace Breaker
         void GetState(GameState& state);
 
     private:
-        static constexpr float offset = 20.0f;
+        static constexpr float offset = 10.0f * 1.5;
         float shakeTime = 0.0f;
-        int lives = 3;
+        int lives = 5;
         const WinProps* props;
         Rect playzone;
         std::vector<Brick>* bricks = nullptr;

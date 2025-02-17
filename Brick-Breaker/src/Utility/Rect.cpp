@@ -1,4 +1,5 @@
 #include "Rect.h"
+#include "Rect.h"
 
 static float getRandomFloat(float min, float max) 
 {
@@ -90,4 +91,11 @@ Direction Rect::VectorDirection(glm::vec2 target)
 		}
 	}
 	return (Direction)best_match;
+}
+
+bool Rect::PointInRect(glm::vec2 point)
+{
+	return (point.x >= Left && point.x <= Right &&
+		point.y >= Top && point.y <= Bottom);
+
 }

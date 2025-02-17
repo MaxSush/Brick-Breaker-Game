@@ -19,7 +19,6 @@ namespace Breaker
 
     void Application::Run()
     {
-        int lvl = 0;
         bool levelLoaded = false;
 
         game->Init();
@@ -40,13 +39,12 @@ namespace Breaker
             case GameState::GAME_LEVEL_MENU:
                 lvl_menu->LevelUpdate(dt);
                 lvl_menu->LevelRender();
-                lvl = lvl_menu->GetLevel();
                 lvl_menu->GetGameState(gamestate);
                 levelLoaded = false;
                 break;
             case GameState::GAME_ACTIVE:
                 if (!levelLoaded) {
-                    game->LoadLevel(lvl);
+                    game->LoadLevel(lvl_menu->GetLevel());
                     levelLoaded = true;
                 }
                 game->Update(dt);

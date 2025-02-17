@@ -5,7 +5,8 @@
 namespace Breaker
 {
     Window::Window(const WinProps& props)
-        : props(props)
+        : props(props),
+        mouse(MouseListner::get())
     {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -19,6 +20,7 @@ namespace Breaker
 
     Window::~Window()
     {
+        glfwDestroyCursor(MouseListner::get().cursor);
         glfwDestroyWindow(props.window);
         glfwTerminate();
     }
@@ -32,6 +34,8 @@ namespace Breaker
     void Window::OnUpdate()
     {
         glfwGetWindowSize(props.window, &props.width, &props.height);
+        mouse.CheckCursorInactivity(&props);
+
         glViewport(0, 0, props.width, props.height);
         glfwSwapBuffers(props.window);
 
@@ -66,13 +70,16 @@ namespace Breaker
 
         glfwMakeContextCurrent(props.window);
 
-        glfwSetKeyCallback(props.window, KeyListner::key_callback);
-
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
             std::cout << "Failed to initialize GLAD" << std::endl;
             return;
         }
+
+        glfwSetKeyCallback(props.window, KeyListner::key_callback);
+        glfwSetCursorPosCallback(props.window, MouseListner::cursor_position_callback);
+        glfwSetMouseButtonCallback(props.window, MouseListner::mouse_button_callback);
+        glfwSetScrollCallback(props.window, MouseListner::scroll_callback);
 
         glfwSwapInterval(1);
 
@@ -86,5 +93,8 @@ namespace Breaker
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        mouse.CreateCursor("assets/cursor.png");
+        glfwSetCursor(props.window, mouse.cursor);
     }
 }

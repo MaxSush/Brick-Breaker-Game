@@ -22,8 +22,16 @@ private:
 	FrameBuffer* window_effect = nullptr;
 	Rect rect;
 
+	Rect pauseresume;
+	Rect pauserestart;
+	Rect pausemenu;
+
+	Rect loserestart;
+	Rect losemenu;
+
 	int pause_itr = 1;
 	int lose_itr = 1;
-
 	float scale = 1.2f;
+	int lastPHoveredButton = -1;
+	int lastLHoveredButton = -1;
 };

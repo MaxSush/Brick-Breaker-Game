@@ -5,7 +5,8 @@ set(CPP_SOURCES
     Application.cpp  
     Window/glfw_window.cpp
     glad.c
-  Window/KeyListner.cpp
+    Window/KeyListner.cpp
+    Window/MouseListner.cpp
 )
 
 add_subdirectory("assets")
@@ -17,7 +18,7 @@ add_subdirectory("Game")
 add_subdirectory("Menu")
 
 
-add_executable(Far-Annoyed ${CPP_SOURCES})
+add_executable(Far-Annoyed ${CPP_SOURCES} )
 
 target_include_directories(Far-Annoyed PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

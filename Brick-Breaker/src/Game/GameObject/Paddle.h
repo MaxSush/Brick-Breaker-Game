@@ -19,7 +19,7 @@ public:
 private:
 	glm::vec2 start_pos, start_size;
 	glm::vec2 velocity = { 0,0 };
-	float speed = 550;
+	float speed = 600;
 	bool cooldown = false;
 
 	void DoWallCollision(Rect& playzone, Ball* ball);
