@@ -29,6 +29,7 @@ public:
 	static int WheelScrolledDirection();
 	static bool IsWheelScrolled();
 	static glm::vec2 GetLastClickedMousePos();
+	static glm::vec2 GetMouseCursorLocation();
 	static bool IsHoverOverRect(Rect rect);
 
 	void CreateCursor(const char* filename);

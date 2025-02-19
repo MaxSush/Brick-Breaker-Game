@@ -1,5 +1,4 @@
 #include "PowerUps.h"
-#include "PowerUps.h"
 #include <random>
 
 
@@ -15,19 +14,19 @@ PowerUps::PowerUps()
 
 void PowerUps::SpawnPowerUps(Rect& brickBlock)
 {
-	if (ShouldSpawn(20))	// SPEED
+	if (ShouldSpawn(30))	// SPEED
 	{
 		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("speed"), PowerType::SPEED, 0.0f));
 		//std::cout << "Spawned SPEED Poweerup" << "\n";
 		return;
 	}
-	if (ShouldSpawn(30))	// PAD_SIZE_INCREASE
+	if (ShouldSpawn(25))	// PAD_SIZE_INCREASE
 	{
 		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("increase"), PowerType::PAD_SIZE_INCREASE, 0.0f));
 		//std::cout << "Spawned PAD_SIZE_INCREASE Poweerup" << "\n";
 		return;
 	}
-	if (ShouldSpawn(30))	// PASS_THROUGH
+	if (ShouldSpawn(20))	// PASS_THROUGH
 	{
 		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("passthrough"), PowerType::PASS_THROUGH, 10.0f));
 		//std::cout << "Spawned PASS_THROUGH Poweerup" << "\n";
@@ -39,15 +38,15 @@ void PowerUps::SpawnPowerUps(Rect& brickBlock)
 		//std::cout << "Spawned STICKY Poweerup" << "\n";
 		return;
 	}
-	if (ShouldSpawn(20))	// CONFUSE
+	if (ShouldSpawn(25))	// CONFUSE
 	{
-		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("confuse"), PowerType::CONFUSE, 7.0f));
+		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("confuse"), PowerType::CONFUSE, 5.0f));
 		//std::cout << "Spawned CONFUSE Poweerup" << "\n";
 		return;
 	}
-	if (ShouldSpawn(30))	// CHAOS
+	if (ShouldSpawn(20))	// CHAOS
 	{
-		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("chaos"), PowerType::CHAOS, 15.0f));
+		powerups.push_back(PowerBlock(brickBlock.pos, brickBlock.size, ResourceManager::GetTexture("chaos"), PowerType::CHAOS, 5.0f));
 		//std::cout << "Spawned CHAOS Poweerup" << "\n";
 		return;
 	}
@@ -153,7 +152,12 @@ bool PowerUps::IsOtherPowerUpsActivated(PowerType type)
 
 void PowerUps::Reset()
 {
-	powerups.clear();
+	for (auto& p : powerups)
+	{
+		p.destroyed = true;
+		p.activated = false;
+		p.DestroyPowerBlock();
+	}
 }
 
 PowerUps::PowerBlock::PowerBlock(glm::vec2 pos, glm::vec2 size, const Texture& texture, PowerType type, float duration)

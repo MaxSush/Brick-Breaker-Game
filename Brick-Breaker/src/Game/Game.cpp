@@ -94,6 +94,11 @@ namespace Breaker
 		level = new GameLevel(lvl);
 		level->LoadLevel(playzone);
 		bricks = level->GetBricks();
+		ball->Reset();
+		paddle->Reset();
+		powerups.Reset();
+		effects->Reset();
+		lives = 5;
 	}
 
 	void Game::GetState(GameState& state)
@@ -106,10 +111,16 @@ namespace Breaker
 	{
 		ResourceManager::PlayAudio("breakout", true);
 
+		if (window != GameWindow::GAME_PLAY)
+		{
+			glfwSetInputMode(props->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+
 		switch (window)
 		{
 		case GameWindow::GAME_PLAY:
 			{
+				glfwSetInputMode(props->window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 				paddle->Update(dt, playzone, ball);
 				ball->SetBall();
 				powerups.UpdatePowerUps(dt, playzone, ball, effects);
@@ -165,6 +176,7 @@ namespace Breaker
 			ball->Reset();
 			paddle->Reset();
 			powerups.Reset();
+			effects->Reset();
 			lives = 5;
 			window = GameWindow::GAME_PLAY;
 			ResourceManager::StopAudio("win_bgm");

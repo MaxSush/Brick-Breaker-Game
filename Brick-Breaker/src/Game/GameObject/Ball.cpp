@@ -1,5 +1,6 @@
 #include "Ball.h"
-#include "Ball.h"
+#include "../Window/KeyListner.h"
+#include "../Window/MouseListner.h"
 
 Ball::Ball(glm::vec2 pos, float radius, const Texture& texture)
 	:
@@ -87,7 +88,7 @@ void Ball::DoBrickColision(Collision& collision)
 
 void Ball::SetBall()
 {
-	if (KeyListner::IsKeyPressed(GLFW_KEY_SPACE))
+	if (KeyListner::IsKeyPressed(GLFW_KEY_SPACE) || MouseListner::IsButtonClickedOnce(GLFW_MOUSE_BUTTON_LEFT))
 	{
 		stuck = false;
 	}
@@ -106,7 +107,7 @@ void Ball::ReboundY()
 void Ball::Reset()
 {
 	stuck = true;
-	speed = 600;
+	speed = 500;
 	velocity = { 0.0f,-1.0f };
 }
 

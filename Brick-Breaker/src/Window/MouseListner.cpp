@@ -116,6 +116,11 @@ glm::vec2 MouseListner::GetLastClickedMousePos()
 	return mouse.lastpos;
 }
 
+glm::vec2 MouseListner::GetMouseCursorLocation()
+{
+	return glm::vec2(get().xpos,get().ypos);
+}
+
 bool MouseListner::IsHoverOverRect(Rect rect)
 {
 	return rect.PointInRect({mouse.xpos, mouse.ypos});

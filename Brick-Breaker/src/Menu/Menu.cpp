@@ -1,6 +1,4 @@
 #include "Menu.h"
-#include "Menu.h"
-#include "Menu.h"
 #include <iostream>
 #include "../Window/KeyListner.h"
 #include "../Window/MouseListner.h"

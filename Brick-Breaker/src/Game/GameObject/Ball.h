@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameObject.h"
-#include "../Window/KeyListner.h"
 #include "Rect.h"
 #include "Brick.h"
 
@@ -32,5 +31,5 @@ public:
 private:
 	glm::vec2 velocity = { 0.0f,-1.0f };
 	float radius;
-	float speed = 600;
+	float speed = 500;
 };

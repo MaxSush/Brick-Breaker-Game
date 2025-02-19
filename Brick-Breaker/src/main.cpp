@@ -1,14 +1,9 @@
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-
 #include <iostream>
-
 #include "Application.h"
 
 int main()
 {
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
+    // main application
     try
     {
         auto* app = new Breaker::Application;
@@ -33,8 +28,6 @@ int main()
 
         std::cerr << "Error [ " << errno << " ]: " << buffer << std::endl;
     }
-
-    // auto* app = new Breaker::Application; app->Run(); 
 
     return 0;
 }

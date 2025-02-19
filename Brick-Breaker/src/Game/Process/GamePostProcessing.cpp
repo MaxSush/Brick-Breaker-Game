@@ -47,6 +47,16 @@ void GameEffects::Render(float dt)
 	vao.Unbind();
 }
 
+void GameEffects::Reset()
+{
+	shader.setBool("confuse", false);
+	shader.setBool("chaos", false);
+	shader.setBool("shake", false);
+	chaos = false;
+	confuse = false;
+	shake = false;
+}
+
 void GameEffects::Init()
 {
 	// Multisample Framebuffer

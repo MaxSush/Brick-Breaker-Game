@@ -1,5 +1,6 @@
 #include "Paddle.h"
 #include "../Window/KeyListner.h"
+#include "../Window/MouseListner.h"
 #include <algorithm>
 #include <Manager\ResourceManager.h>
 
@@ -17,8 +18,12 @@ Paddle::~Paddle()
 
 void Paddle::Update(float dt,Rect& playzone, Ball* ball)
 {
-	glm::vec2 delta = velocity * speed * dt;
-	rect.pos += delta;
+	glm::vec2 mousepos = MouseListner::GetMouseCursorLocation();
+	float targetX = mousepos.x - (rect.size.x / 2.0f);
+
+	float lerpSpeed = 5.0f;
+	rect.pos.x += (targetX - rect.pos.x) * lerpSpeed * dt;
+
 	if (ball->IsStuck()) {
 		ball->GetRect().pos = glm::vec2{ rect.size.x / 2.0f - ball->GetRadius(), -ball->GetRadius() * 2.0f} + rect.pos;
 		ball->SetVelocity({0.0f,-1.0f});
@@ -57,7 +62,6 @@ void Paddle::SetCooldown()
 
 void Paddle::Reset()
 {
-	velocity = { 0,0 };
 	float speed = 550;
 	bool cooldown = false;
 	rect = Rect(start_pos, start_size);
@@ -70,19 +74,6 @@ Rect& Paddle::GetRect()
 
 void Paddle::DoWallCollision(Rect& playzone, Ball* ball)
 {
-	if (KeyListner::IsKeyPressed(GLFW_KEY_LEFT))
-	{
-		velocity = { -1,0 };
-	}
-	else if (KeyListner::IsKeyPressed(GLFW_KEY_RIGHT))
-	{
-		velocity = { 1,0 };
-	}
-	else
-	{
-		velocity = { 0,0 };
-	}
-
 	// bound paddle and ball in playzone
 	if (rect.pos.x <= playzone.Left)
 	{

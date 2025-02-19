@@ -11,6 +11,7 @@ public:
 	void BeginRender() const;
 	void EndRender() const;
 	void Render(float dt);
+	void Reset();
 
 	bool chaos = false, confuse = false, shake = false;
 

@@ -33,7 +33,7 @@ private:
 	
 	std::vector<Block> blocks;
 	std::vector<float> scaleFactors;
-	int total_blocks = 10;
+	int total_blocks = 11;
 	int selectedIndex = 0;
 	int level = 1;
 	float shift = 0.0f;
